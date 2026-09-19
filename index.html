@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
@@ -1627,8 +1627,10 @@
         function renderIncomes() {
             const container = document.getElementById('income-list-view');
             if (!container) return;
-            const search = document.getElementById('income-search').value.toLowerCase();
-            const filterCat = document.getElementById('income-filter-cat').value;
+            const searchInput = document.getElementById('income-search');
+            const search = searchInput ? searchInput.value.toLowerCase() : '';
+            const filterCatInput = document.getElementById('income-filter-cat');
+            const filterCat = filterCatInput ? filterCatInput.value : '';
 
             const filtered = appData.incomes.filter(item => {
                 const matchSearch = item.title.toLowerCase().includes(search);
@@ -1664,8 +1666,10 @@
         function renderExpenses() {
             const container = document.getElementById('expense-list');
             if (!container) return;
-            const search = document.getElementById('expense-search').value.toLowerCase();
-            const filterCat = document.getElementById('expense-filter-cat').value;
+            const searchInput = document.getElementById('expense-search');
+            const search = searchInput ? searchInput.value.toLowerCase() : '';
+            const filterCatInput = document.getElementById('expense-filter-cat');
+            const filterCat = filterCatInput ? filterCatInput.value : '';
 
             const filtered = appData.expenses.filter(item => {
                 const matchSearch = item.title.toLowerCase().includes(search);
@@ -1716,22 +1720,24 @@
                             <div>
                                 <h4 class="font-semibold text-gray-900 dark:text-white text-sm">${debt.title}</h4>
                                 <p class="text-[11px] text-gray-400">Pay to: <strong class="text-gray-700 dark:text-gray-300">${debt.payee}</strong> via <strong class="text-gray-700 dark:text-gray-300">${debt.account || 'Cash'}</strong></p>
-                                <p class="text-[11px] text-gray-400 mt-0.5">Total: ${appData.currency}${debt.total.toFixed(2)} • Due/mo: ${appData.currency}${monthlyDue.toFixed(2)}</p>
+                                <p class="text-[11px] text-gray-400 mt-0.5">Total: ${appData.currency}${debt.total.toFixed(2)} | Due: ${debt.deadline}</p>
                             </div>
-                            <button onclick="deleteDebt(${debt.id})" class="text-gray-400 hover:text-rose-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="deleteDebt(${debt.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
                         </div>
+                        
                         <div class="space-y-1">
                             <div class="flex justify-between text-xs font-medium">
-                                <span class="text-gray-500">Paid: <strong class="text-brand-600 dark:text-brand-400">${appData.currency}${debt.paid.toFixed(2)}</strong></span>
-                                <span class="text-gray-500">Rest: <strong class="text-rose-500">${appData.currency}${remaining.toFixed(2)}</strong></span>
+                                <span class="text-amber-600 dark:text-amber-400 font-semibold">Remaining: ${appData.currency}${remaining.toFixed(2)}</span>
+                                <span class="text-gray-500 dark:text-gray-400">Paid: ${appData.currency}${debt.paid.toFixed(2)} (${progress}%)</span>
                             </div>
                             <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                                <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${progress}%"></div>
                             </div>
                         </div>
+
                         <div class="flex items-center justify-between pt-1">
-                            <span class="text-[11px] font-medium text-gray-400">${progress}% Paid off</span>
-                            <button onclick="payDebtInstallment(${debt.id})" class="bg-gray-900 dark:bg-gray-700 text-white px-3 py-1.5 rounded-xl font-medium text-xs shadow-sm">Pay Installment</button>
+                            <span class="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Est. Monthly: <strong>${appData.currency}${monthlyDue.toFixed(2)}</strong></span>
+                            <button onclick="payDebtInstallment(${debt.id})" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xs transition">Pay Installment</button>
                         </div>
                     </div>
                 `;
@@ -1741,7 +1747,7 @@
         function renderReceivables() {
             const container = document.getElementById('receivable-list');
             if (!container) return;
-            if (!appData.receivables || appData.receivables.length === 0) {
+            if (appData.receivables.length === 0) {
                 container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No receivables registered.</p>`;
                 return;
             }
@@ -1754,23 +1760,24 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <h4 class="font-semibold text-gray-900 dark:text-white text-sm">${rec.title}</h4>
-                                <p class="text-[11px] text-gray-400">Credited To: <strong class="text-gray-700 dark:text-gray-300">${rec.account || 'Cash'}</strong> • Date: ${rec.deadline}</p>
-                                <p class="text-[11px] text-gray-400 mt-0.5">Total Owed: ${appData.currency}${rec.total.toFixed(2)}</p>
+                                <p class="text-[11px] text-gray-400">Target Account: <strong class="text-gray-700 dark:text-gray-300">${rec.account || 'Cash'}</strong></p>
+                                <p class="text-[11px] text-gray-400 mt-0.5">Total Expected: ${appData.currency}${rec.total.toFixed(2)} | Date: ${rec.deadline}</p>
                             </div>
-                            <button onclick="deleteReceivable(${rec.id})" class="text-gray-400 hover:text-rose-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="deleteReceivable(${rec.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
                         </div>
+                        
                         <div class="space-y-1">
                             <div class="flex justify-between text-xs font-medium">
-                                <span class="text-gray-500">Collected: <strong class="text-emerald-600 dark:text-emerald-400">${appData.currency}${rec.collected.toFixed(2)}</strong></span>
-                                <span class="text-gray-500">Pending: <strong class="text-amber-500">${appData.currency}${remaining.toFixed(2)}</strong></span>
+                                <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Pending: ${appData.currency}${remaining.toFixed(2)}</span>
+                                <span class="text-gray-500 dark:text-gray-400">Collected: ${appData.currency}${rec.collected.toFixed(2)} (${progress}%)</span>
                             </div>
                             <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                 <div class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: ${progress}%"></div>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between pt-1">
-                            <span class="text-[11px] font-medium text-gray-400">${progress}% Collected</span>
-                            <button onclick="collectReceivable(${rec.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl font-medium text-xs shadow-sm">Collect Payment</button>
+
+                        <div class="flex items-center justify-end pt-1">
+                            <button onclick="collectReceivable(${rec.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xs transition">Collect Payment</button>
                         </div>
                     </div>
                 `;
@@ -1780,7 +1787,7 @@
         function renderGoals() {
             const container = document.getElementById('goals-management-list');
             if (!container) return;
-            if (!appData.goals || appData.goals.length === 0) {
+            if (appData.goals.length === 0) {
                 container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No savings goals created.</p>`;
                 return;
             }
@@ -1793,48 +1800,47 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <h4 class="font-semibold text-gray-900 dark:text-white text-sm">${goal.title}</h4>
-                                <p class="text-[11px] text-gray-400">Target Date: ${goal.deadline}</p>
-                                <p class="text-[11px] text-gray-400 mt-0.5">Target Goal: ${appData.currency}${goal.target.toFixed(2)}</p>
+                                <p class="text-[11px] text-gray-400">Target: ${appData.currency}${goal.target.toFixed(2)} | Deadline: ${goal.deadline}</p>
                             </div>
-                            <button onclick="deleteGoal(${goal.id})" class="text-gray-400 hover:text-rose-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="deleteGoal(${goal.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
                         </div>
+
                         <div class="space-y-1">
                             <div class="flex justify-between text-xs font-medium">
-                                <span class="text-gray-500">Saved: <strong class="text-brand-600 dark:text-brand-400">${appData.currency}${goal.saved.toFixed(2)}</strong></span>
-                                <span class="text-gray-500">Remaining: <strong class="text-amber-500">${appData.currency}${remaining.toFixed(2)}</strong></span>
+                                <span class="text-brand-600 dark:text-brand-400 font-semibold">Saved: ${appData.currency}${goal.saved.toFixed(2)} (${progress}%)</span>
+                                <span class="text-gray-500 dark:text-gray-400">Left: ${appData.currency}${remaining.toFixed(2)}</span>
                             </div>
                             <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                 <div class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: ${progress}%"></div>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between pt-1">
-                            <span class="text-[11px] font-medium text-gray-400">${progress}% Achieved</span>
-                            <button onclick="contributeToGoal(${goal.id})" class="bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-xl font-medium text-xs shadow-sm">Contribute</button>
+
+                        <div class="flex items-center justify-end pt-1">
+                            <button onclick="contributeToGoal(${goal.id})" class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xs transition">Add Contribution</button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Charts Logic
+        // Charts Initialization & Updates
         function initCharts() {
             const ctxMain = document.getElementById('mainPieChart')?.getContext('2d');
-            const ctxBudget = document.getElementById('budgetPieChart')?.getContext('2d');
-
             if (ctxMain) {
                 mainChartInstance = new Chart(ctxMain, {
                     type: 'doughnut',
-                    data: getChartData('expense'),
+                    data: getChartData(),
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 10 } } }
+                            legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
                         }
                     }
                 });
             }
 
+            const ctxBudget = document.getElementById('budgetPieChart')?.getContext('2d');
             if (ctxBudget) {
                 budgetPieInstance = new Chart(ctxBudget, {
                     type: 'doughnut',
@@ -1843,7 +1849,7 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 10 } } }
+                            legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
                         }
                     }
                 });
@@ -1862,55 +1868,58 @@
                 btnTrend.className = "px-3 py-1 rounded-lg font-medium bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-xs transition";
                 btnExp.className = "px-3 py-1 rounded-lg font-medium text-gray-500 dark:text-gray-400 transition";
             }
+
             updateCharts();
         }
 
-        function getChartData(type) {
-            if (type === 'expense') {
+        function getChartData() {
+            if (currentChartTab === 'expense') {
                 const catTotals = {};
-                appData.expenses.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + e.amount; });
+                appData.expenses.forEach(e => {
+                    catTotals[e.category] = (catTotals[e.category] || 0) + e.amount;
+                });
                 const labels = Object.keys(catTotals);
                 const data = Object.values(catTotals);
 
                 return {
-                    labels: labels.length ? labels : ['No Data'],
+                    labels: labels.length ? labels : ['No Expense'],
                     datasets: [{
                         data: data.length ? data : [1],
-                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#64748b']
+                        backgroundColor: ['#f43f5e', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#6366f1', '#14b8a6']
                     }]
                 };
             } else {
-                const totalInc = appData.incomes.reduce((acc, c) => acc + c.amount, 0);
-                const totalExp = appData.expenses.reduce((acc, c) => acc + c.amount, 0);
+                const totalInc = appData.incomes.reduce((s, i) => s + i.amount, 0);
+                const totalExp = appData.expenses.reduce((s, e) => s + e.amount, 0);
 
                 return {
-                    labels: ['Income', 'Expense'],
+                    labels: ['Total Income', 'Total Expense'],
                     datasets: [{
                         data: [totalInc, totalExp],
-                        backgroundColor: ['#22c55e', '#ef4444']
+                        backgroundColor: ['#22c55e', '#f43f5e']
                     }]
                 };
             }
         }
 
         function getBudgetChartData() {
-            const catExp = {};
-            appData.expenses.forEach(e => { catExp[e.category] = (catExp[e.category] || 0) + e.amount; });
             const labels = Object.keys(appData.budgets);
-            const data = labels.map(l => catExp[l] || 0);
+            const data = Object.values(appData.budgets);
 
             return {
-                labels: labels.length ? labels : ['No Budget'],
+                labels: labels.length ? labels : ['No Limits'],
                 datasets: [{
                     data: data.length ? data : [1],
-                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16']
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#6366f1', '#14b8a6', '#f43f5e']
                 }]
             };
         }
 
         function updateCharts() {
             if (!mainChartInstance) return;
-            mainChartInstance.data = getChartData(currentChartTab);
+            const chartData = getChartData();
+            mainChartInstance.data = chartData;
+            mainChartInstance.config.type = currentChartTab === 'expense' ? 'doughnut' : 'bar';
             mainChartInstance.update();
         }
 
