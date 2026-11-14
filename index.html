@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Italy - Pro Dashboard</title>
+<title>ProbashiMate Italy - Pro Dashboard</title>
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'><rect width='1' height='2' fill='%23009246'/><rect x='1' width='1' height='2' fill='%23FFFFFF'/><rect x='2' width='1' height='2' fill='%23CE2B37'/></svg>">
 <style>
   :root {
@@ -2087,4 +2087,393 @@
               <span><b style="color:var(--danger);">€${amt.toFixed(2)}</b> (${pct.toFixed(0)}%)</span>
             </div>
             <div class="progress-bar"><div class="progress-bar-inner spend" style="width:${pct}%"></div></div>
+          </div>`;
+      });
+      document.getElementById("sumCategoryBreakdown").innerHTML = catHTML || `<p style="font-size:13px; color:var(--text-muted);">No EUR expenses found for this selection.</p>`;
+
+      let histHTML = "";
+      filtered.forEach(e => {
+        let entryStr = e.entryDate ? ` • Entered: ${e.entryDate}` : '';
+        histHTML += `
+          <div class="item-row">
+            <div class="item-header">
+              <div>
+                <strong>${e.where}</strong>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+                  📅 ${e.date} • <span class="badge badge-src">${e.sourceType === 'cash' ? '💵 ' : '💳 '}${e.sourceName}</span> ${entryStr}
+                </div>
+              </div>
+              <div style="text-align:right; display:flex; align-items:center; gap:8px;">
+                <strong style="color:var(--danger); font-size:14px;">-€${e.amount.toFixed(2)}</strong>
+                <button type="button" class="app-btn danger" style="padding:4px 8px; flex:none;" onclick="deleteExpense(${e.id})"><span class="icon" style="font-size:12px;">🗑️</span></button>
+              </div>
+            </div>
+          </div>`;
+      });
+      document.getElementById("sumTransactionList").innerHTML = histHTML || `<p style="font-size:13px; color:var(--text-muted);">No EUR transactions recorded in this period.</p>`;
+
+    } else {
+      document.getElementById("sumBdtTotalLabel").innerText = `Total BDT Spent (${labelText})`;
+      let totalBdtPeriod = 0;
+      let categoryMap = {};
+
+      filtered.forEach(e => {
+        totalBdtPeriod += e.amount;
+        let key = e.where.trim();
+        categoryMap[key] = (categoryMap[key] || 0) + e.amount;
+      });
+
+      document.getElementById("sumBdtPeriodTotal").innerText = `৳${totalBdtPeriod.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+
+      let sortedCats = Object.entries(categoryMap).sort((a, b) => b[1] - a[1]);
+      renderDonutChart(sortedCats, totalBdtPeriod, "৳");
+
+      let catHTML = "";
+      sortedCats.forEach(([cat, amt]) => {
+        let pct = totalBdtPeriod > 0 ? (amt / totalBdtPeriod) * 100 : 0;
+        catHTML += `
+          <div style="margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <strong>${cat}</strong>
+              <span><b style="color:var(--danger);">৳${amt.toLocaleString('en-IN', {minimumFractionDigits: 2})}</b> (${pct.toFixed(0)}%)</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar-inner spend" style="width:${pct}%"></div></div>
+          </div>`;
+      });
+      document.getElementById("sumCategoryBreakdown").innerHTML = catHTML || `<p style="font-size:13px; color:var(--text-muted);">No BDT expenses found for this selection.</p>`;
+
+      let histHTML = "";
+      filtered.forEach(e => {
+        let entryStr = e.entryDate ? ` • Entered: ${e.entryDate}` : '';
+        histHTML += `
+          <div class="item-row">
+            <div class="item-header">
+              <div>
+                <strong>${e.where}</strong>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+                  📅 ${e.date} • <span class="badge badge-src">🇧🇩 ${e.sourceName}</span> ${entryStr}
+                </div>
+              </div>
+              <div style="text-align:right; display:flex; align-items:center; gap:8px;">
+                <strong style="color:var(--danger); font-size:14px;">-৳${e.amount.toLocaleString('en-IN', {minimumFractionDigits: 2})}</strong>
+                <button type="button" class="app-btn danger" style="padding:4px 8px; flex:none;" onclick="deleteExpense(${e.id})"><span class="icon" style="font-size:12px;">🗑️</span></button>
+              </div>
+            </div>
+          </div>`;
+      });
+      document.getElementById("sumTransactionList").innerHTML = histHTML || `<p style="font-size:13px; color:var(--text-muted);">No BDT transactions recorded in this period.</p>`;
+    }
+  }
+
+  function renderDashboardAnalytics() {
+    let now = new Date();
+    let currMonthStr = now.toISOString().slice(0, 7);
+    let currMonthName = now.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+
+    let lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    let lastMonthStr = lastMonthDate.toISOString().slice(0, 7);
+    let lastMonthName = lastMonthDate.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+
+    let eurExpenses = db.expenses.filter(e => !e.currency || e.currency === 'EUR');
+    let currSpent = eurExpenses.filter(e => e.date && e.date.startsWith(currMonthStr)).reduce((a, c) => a + c.amount, 0);
+    let lastSpent = eurExpenses.filter(e => e.date && e.date.startsWith(lastMonthStr)).reduce((a, c) => a + c.amount, 0);
+
+    document.getElementById("currMonthLabel").innerText = `This Month (${currMonthName})`;
+    document.getElementById("currMonthAmt").innerText = `€${currSpent.toFixed(2)}`;
+    document.getElementById("lastMonthLabel").innerText = `Last Month (${lastMonthName})`;
+    document.getElementById("lastMonthAmt").innerText = `€${lastSpent.toFixed(2)}`;
+
+    let maxVal = Math.max(currSpent, lastSpent, 1);
+    document.getElementById("currMonthBar").style.width = `${(currSpent / maxVal) * 100}%`;
+    document.getElementById("lastMonthBar").style.width = `${(lastSpent / maxVal) * 100}%`;
+
+    let trendBadge = document.getElementById("expenseTrendBadge");
+    let insightText = document.getElementById("expenseInsightText");
+
+    if (lastSpent === 0 && currSpent === 0) {
+      trendBadge.className = "trend-pill trend-neutral";
+      trendBadge.innerText = "0% Change";
+      insightText.innerText = "No spending recorded in last month or this month yet.";
+    } else if (lastSpent === 0 && currSpent > 0) {
+      trendBadge.className = "trend-pill trend-up";
+      trendBadge.innerText = "▲ +100% vs Last Month";
+      insightText.innerText = `You spent €${currSpent.toFixed(2)} this month (no spending recorded last month).`;
+    } else {
+      let diff = currSpent - lastSpent;
+      let pct = ((diff / lastSpent) * 100).toFixed(1);
+      if (diff > 0) {
+        trendBadge.className = "trend-pill trend-up";
+        trendBadge.innerText = `▲ +${pct}% Higher`;
+        insightText.innerHTML = `You spent <b style="color:var(--danger);">€${diff.toFixed(2)} (${pct}%) more</b> than ${lastMonthName}.`;
+      } else if (diff < 0) {
+        let absPct = Math.abs(pct);
+        trendBadge.className = "trend-pill trend-down";
+        trendBadge.innerText = `▼ -${absPct}% Lower`;
+        insightText.innerHTML = `Great! You spent <b style="color:var(--success);">€${Math.abs(diff).toFixed(2)} (${absPct}%) less</b> than ${lastMonthName}.`;
+      } else {
+        trendBadge.className = "trend-pill trend-neutral";
+        trendBadge.innerText = "0% Same";
+        insightText.innerText = `Spending is identical to ${lastMonthName}.`;
+      }
+    }
+
+    let totalPiggy = 0;
+    let savingsHTML = "";
+    db.goals.forEach(g => {
+      totalPiggy += g.saved;
+      let pct = Math.min(100, (g.saved / g.target) * 100);
+      savingsHTML += `
+        <div class="chart-row">
+          <div class="chart-label-row">
+            <strong>🎯 ${g.title}</strong>
+            <span><b style="color:var(--success);">€${g.saved.toFixed(2)}</b> / €${g.target.toFixed(2)} (${pct.toFixed(0)}%)</span>
           </div>
+          <div class="bar-track">
+            <div class="bar-fill bar-save" style="width:${pct}%"></div>
+          </div>
+        </div>`;
+    });
+    document.getElementById("dashTotalPiggy").innerText = `€${totalPiggy.toFixed(2)}`;
+    document.getElementById("dashSavingsVisual").innerHTML = savingsHTML || `<p style="font-size:12px; color:var(--text-muted); margin:0;">No savings goals set yet. Add goals in Wallet.</p>`;
+  }
+
+  function renderAll() {
+    document.getElementById("cashDisplay").innerText = `€${Number(db.cash).toFixed(2)}`;
+    document.getElementById("dashTotalCash").innerText = `€${Number(db.cash).toFixed(2)}`;
+
+    let totalBank = 0;
+    db.banks.forEach(b => { totalBank += Number(b.bal); });
+    document.getElementById("dashTotalBank").innerText = `€${totalBank.toFixed(2)}`;
+    document.getElementById("dashGrandTotal").innerText = `€${(totalBank + Number(db.cash)).toFixed(2)}`;
+
+    let totalBdt = 0;
+    db.bdtAccounts.forEach(b => { totalBdt += Number(b.bal); });
+    document.getElementById("dashTotalBdt").innerText = `৳${totalBdt.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+
+    renderDashboardAnalytics();
+    renderAdvancedSummary();
+
+    let dashDocHTML = "", alertHTML = "", smartApptReminders = "";
+    db.docs.forEach((d) => {
+      let st = getExpiryStatus(d.exp);
+      if (st.urgent) {
+        alertHTML += `
+          <div class="alert-banner ${st.diff >= 0 ? 'warning' : ''}">
+            <span>⚠️ <b>${d.name}</b>: ${st.text}</span>
+            <button type="button" class="app-btn primary" style="padding:4px 8px; flex:none; font-size:11px;" onclick="triggerInstantReminder('Document Expiry Alert', '${d.name} - ${st.text}')">🔔</button>
+          </div>`;
+      }
+      dashDocHTML += `<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border);"><span>${d.name}</span><span class="badge ${st.cls}">${st.text}</span></div>`;
+    });
+    document.getElementById("expiryAlertsArea").innerHTML = alertHTML;
+    document.getElementById("dashDocStatus").innerHTML = dashDocHTML || "No documents uploaded yet.";
+
+    let activeAppts = db.appts.filter(a => a.status === 'active');
+    let dashApptHTML = "";
+    activeAppts.forEach((a, i) => {
+      let ast = getApptStatus(a.date);
+      if (ast.diff >= 0 && ast.diff <= 3) {
+        smartApptReminders += `
+          <div class="alert-banner info">
+            <span>📅 <b>${a.title}</b> is ${ast.text} (${a.date} ${a.time || ''})</span>
+            <button type="button" class="app-btn info" style="padding:4px 8px; flex:none; font-size:11px;" onclick="triggerInstantReminder('Upcoming Appointment', '${a.title} on ${a.date} at ${a.time || ''}')">🔔</button>
+          </div>`;
+      }
+      if (i < 3) dashApptHTML += `<div style="padding:6px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;"><div><b>${a.title}</b><div style="font-size:12px; color:var(--info);">🗓️ ${a.date} ${a.time ? 'at ' + a.time : ''}</div></div><span class="badge ${ast.cls}">${ast.text}</span></div>`;
+    });
+    document.getElementById("smartRemindersArea").innerHTML = smartApptReminders;
+    document.getElementById("dashApptList").innerHTML = dashApptHTML || "No upcoming appointments.";
+
+    // Render Bank Cards with Fixed Spend Buttons
+    let bankHTML = "";
+    db.banks.forEach((b, i) => {
+      bankHTML += `
+        <div class="bank-card">
+          <div class="bank-card-header"><span class="bank-name">${b.name}</span></div>
+          <div class="card-num">${b.card || "No Card Number"}</div>
+          <div class="card-bal">€${Number(b.bal).toFixed(2)}</div>
+          ${b.entryDate ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px;">Entered: ${b.entryDate}</div>` : ""}
+          <div class="btn-container" style="margin-top:10px;">
+            <button type="button" class="app-btn success" onclick="event.stopPropagation(); quickDepositBank(${i})"><span class="icon">➕</span><span>Add</span></button>
+            <button type="button" class="app-btn danger" onclick="event.stopPropagation(); openSpendModal('bank', ${i})"><span class="icon">💸</span><span>Spend</span></button>
+            <button type="button" class="app-btn primary" onclick="event.stopPropagation(); editBankCard(${i})"><span class="icon">✏️</span><span>Edit</span></button>
+            <button type="button" class="app-btn danger" onclick="event.stopPropagation(); deleteBank(${i})"><span class="icon">🗑️</span><span>Del</span></button>
+          </div>
+        </div>`;
+    });
+    document.getElementById("bankList").innerHTML = bankHTML || `<p style="font-size:13px; color:var(--text-muted);">No EUR cards added.</p>`;
+
+    // Render BDT Accounts with Fixed Spend Buttons
+    let bdtHTML = "";
+    db.bdtAccounts.forEach((b, i) => {
+      bdtHTML += `
+        <div class="bdt-card">
+          <div class="bank-card-header"><span class="bdt-name">🇧🇩 ${b.name}</span></div>
+          <div class="card-num">${b.number || "No Account / Phone"}</div>
+          <div class="card-bal" style="color:var(--success);">৳${Number(b.bal).toLocaleString('en-IN', {minimumFractionDigits: 2})}</div>
+          ${b.entryDate ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px;">Entered: ${b.entryDate}</div>` : ""}
+          <div class="btn-container" style="margin-top:10px;">
+            <button type="button" class="app-btn success" onclick="event.stopPropagation(); quickDepositBdt(${i})"><span class="icon">➕</span><span>Add ৳</span></button>
+            <button type="button" class="app-btn danger" onclick="event.stopPropagation(); openSpendModal('bdt', ${i})"><span class="icon">💸</span><span>Spend ৳</span></button>
+            <button type="button" class="app-btn danger" onclick="event.stopPropagation(); deleteBdtAccount(${i})"><span class="icon">🗑️</span><span>Del</span></button>
+          </div>
+        </div>`;
+    });
+    document.getElementById("bdtList").innerHTML = bdtHTML || `<p style="font-size:13px; color:var(--text-muted);">No BDT accounts added.</p>`;
+
+    let loanHTML = "";
+    let settledLoanHTML = "";
+
+    db.loans.forEach((l, i) => {
+      let isPabo = l.type === "pabo";
+      let isSettled = l.status === "settled";
+
+      if (isSettled) {
+        settledLoanHTML += `
+          <div class="item-row" onclick="viewLoanDetail(${i})">
+            <div class="item-header">
+              <div>
+                <strong>👤 ${l.person}</strong>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">
+                  📅 Settled: ${l.settledDate || 'N/A'} • <span style="color:var(--info);">👆 Tap for Details</span>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <strong style="font-size:14px; color:var(--success);">€${(l.originalAmt || l.amt).toFixed(2)}</strong>
+                <div><span class="badge badge-ok">Settled</span></div>
+              </div>
+            </div>
+          </div>`;
+      } else {
+        loanHTML += `
+          <div class="item-row">
+            <div class="item-header" style="flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; width:100%;">
+                <strong onclick="viewLoanDetail(${i})" style="cursor:pointer;">👤 ${l.person} <span style="font-size:11px; color:var(--info);">ℹ️</span></strong>
+                <strong style="font-size:15px; color:${isPabo ? 'var(--success)' : 'var(--danger)'};">€${l.amt.toFixed(2)}</strong>
+              </div>
+              <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between; width:100%;">
+                <span><span class="badge ${isPabo ? 'badge-pabo' : 'badge-dibo'}">${isPabo ? '🟢 Pabo' : '🔴 Dibo'}</span> ${l.entryDate ? '• Entered: ' + l.entryDate : ''}</span>
+              </div>
+              <div class="btn-container" style="width:100%; margin-top:6px;">
+                <button type="button" class="app-btn success" onclick="openSettleModal(${i})"><span class="icon">🤝</span><span>Settle</span></button>
+                <button type="button" class="app-btn danger" onclick="deleteLoan(${i})"><span class="icon">🗑️</span><span>Delete</span></button>
+              </div>
+            </div>
+          </div>`;
+      }
+    });
+
+    document.getElementById("loanList").innerHTML = loanHTML || `<p style="font-size:13px; color:var(--text-muted);">No active records.</p>`;
+    document.getElementById("settledLoanList").innerHTML = settledLoanHTML || `<p style="font-size:13px; color:var(--text-muted);">No settled records yet.</p>`;
+
+    let goalHTML = "";
+    db.goals.forEach((g, i) => {
+      let pct = Math.min(100, (g.saved / g.target) * 100);
+      goalHTML += `
+        <div class="item-row">
+          <div class="item-header" style="flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <strong>🎯 ${g.title}</strong>
+              <span style="font-size:13px; color:var(--success);">€${g.saved.toFixed(2)} / €${g.target.toFixed(2)}</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar-inner" style="width:${pct}%"></div></div>
+            <div class="btn-container" style="width:100%; margin-top:6px;">
+              <button type="button" class="app-btn success" onclick="addMoneyToGoal(${i})"><span class="icon">➕</span><span>Add €</span></button>
+              <button type="button" class="app-btn danger" onclick="deleteGoal(${i})"><span class="icon">🗑️</span><span>Delete</span></button>
+            </div>
+          </div>
+        </div>`;
+    });
+    document.getElementById("goalList").innerHTML = goalHTML || `<p style="font-size:13px; color:var(--text-muted);">No goals.</p>`;
+
+    let docHTML = "";
+    db.docs.forEach((d, i) => {
+      let st = getExpiryStatus(d.exp);
+      docHTML += `
+        <div class="item-row">
+          <div class="item-header" style="flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <strong>${d.name}</strong>
+              <span class="badge ${st.cls}">${st.text}</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-muted);">Expiry: ${d.exp} ${d.entryDate ? '• Entered: ' + d.entryDate : ''}</div>
+            <div class="btn-container" style="width:100%; margin-top:6px;">
+              ${d.fileData ? `<button type="button" class="app-btn primary" onclick="viewDoc(${i})"><span class="icon">👁️</span><span>View File</span></button>` : ""}
+              <button type="button" class="app-btn info" onclick="triggerInstantReminder('Document Reminder', '${d.name} expires on ${d.exp}')"><span class="icon">🔔</span><span>Notify</span></button>
+              <button type="button" class="app-btn danger" onclick="deleteDoc(${i})"><span class="icon">🗑️</span><span>Delete</span></button>
+            </div>
+          </div>
+        </div>`;
+    });
+    document.getElementById("docList").innerHTML = docHTML || `<p style="font-size:13px; color:var(--text-muted);">No documents.</p>`;
+
+    // Render Active Appointments & Archive
+    let apptHTML = "";
+    let archiveHTML = "";
+
+    db.appts.forEach((a, i) => {
+      let ast = getApptStatus(a.date);
+      if (a.status === 'active') {
+        apptHTML += `
+          <div class="item-row">
+            <div class="item-header" style="flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; width:100%;">
+                <strong>📌 ${a.title}</strong>
+                <span class="badge ${ast.cls}">${ast.text}</span>
+              </div>
+              <div style="font-size:13px; color:var(--info);">🗓️ Date: ${a.date} ${a.time ? '• ⏰ Time: ' + a.time : ''}</div>
+              ${a.location ? `<div style="font-size:12px; color:var(--text-muted);">📍 Location: ${a.location}</div>` : ''}
+              <div class="btn-container" style="width:100%; margin-top:6px;">
+                <button type="button" class="app-btn info" onclick="openRescheduleModal(${i})"><span class="icon" style="font-size:13px;">📅</span><span>Reschedule</span></button>
+                <button type="button" class="app-btn success" onclick="triggerInstantReminder('Appointment Reminder', '${a.title} on ${a.date} at ${a.time || ''}')"><span class="icon" style="font-size:13px;">🔔</span><span>Remind</span></button>
+                <button type="button" class="app-btn danger" onclick="openCancelApptModal(${i})"><span class="icon" style="font-size:13px;">❌</span><span>Cancel</span></button>
+              </div>
+            </div>
+          </div>`;
+      } else {
+        archiveHTML += `
+          <div class="item-row" onclick="viewAppointmentTimeline(${i})">
+            <div class="item-header">
+              <div>
+                <strong>📌 ${a.title}</strong>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">
+                  🗓️ Last Date: ${a.date} • <span style="color:var(--info);">👆 Tap for Full Timeline</span>
+                </div>
+              </div>
+              <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span class="badge badge-exp" style="text-transform:uppercase;">${a.status}</span>
+                <button type="button" class="app-btn danger" style="padding:3px 8px; flex:none; border-radius:8px;" onclick="event.stopPropagation(); deleteApptPermanently(${i})"><span class="icon" style="font-size:11px;">🗑️</span><span>Delete</span></button>
+              </div>
+            </div>
+          </div>`;
+      }
+    });
+
+    document.getElementById("apptList").innerHTML = apptHTML || `<p style="font-size:13px; color:var(--text-muted);">No active appointments scheduled.</p>`;
+    document.getElementById("apptArchiveList").innerHTML = archiveHTML || `<p style="font-size:13px; color:var(--text-muted);">No past or canceled appointments in archive.</p>`;
+
+    document.getElementById("lawyerName").value = db.lawyer.name || "";
+    document.getElementById("lawyerPhone").value = db.lawyer.phone || "";
+    document.getElementById("lawyerAddress").value = db.lawyer.address || "";
+    document.getElementById("lawyerNote").value = db.lawyer.note || "";
+
+    if (db.lawyer.name || db.lawyer.phone) {
+      document.getElementById("lawyerDisplay").innerHTML = `
+        <div class="item-row">
+          <strong>👨‍⚖️ ${db.lawyer.name || 'Advocate'}</strong>
+          ${db.lawyer.address ? `<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">📍 ${db.lawyer.address}</div>` : ""}
+          ${db.lawyer.note ? `<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">📝 ${db.lawyer.note}</div>` : ""}
+          <div class="btn-container" style="margin-top:10px;">
+            ${db.lawyer.phone ? `<button type="button" class="app-btn success" onclick="window.location.href='tel:${db.lawyer.phone}'"><span class="icon">📞</span><span>Call Lawyer</span></button>` : ""}
+          </div>
+        </div>`;
+    } else {
+      document.getElementById("lawyerDisplay").innerHTML = "";
+    }
+  }
+
+  renderAll();
+</script>
+</body>
+</html>
