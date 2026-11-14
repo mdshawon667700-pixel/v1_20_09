@@ -113,7 +113,6 @@
   .app-btn.info { background: rgba(10, 132, 255, 0.12); color: var(--info); border-color: rgba(10, 132, 255, 0.25); }
   .app-btn:active { transform: scale(0.96); opacity: 0.85; }
 
-  /* Apple Style Dual Top Grid Cards */
   .top-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
   .top-stat-card { background: var(--card-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--border); border-radius: 20px; padding: 14px; box-shadow: var(--apple-shadow); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
   .top-stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
@@ -128,7 +127,6 @@
   .summary-box span { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px; font-weight: 500; }
   .summary-box strong { font-size: 18px; color: var(--text-color); font-weight: 700; letter-spacing: -0.3px; }
 
-  /* Donut / Pie Chart Styles */
   .donut-container { display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 16px; margin-top: 12px; padding: 10px 0; }
   .donut-chart { width: 140px; height: 140px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: background 0.5s ease; }
   .donut-hole { width: 88px; height: 88px; border-radius: 50%; background: var(--card-solid); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4px; }
@@ -190,14 +188,12 @@
   .filter-pill { padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--card-solid); color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .filter-pill.active { background: var(--text-color); color: var(--bg-color); border-color: transparent; }
 
-  /* Modal Popup Apple Sheet Style */
   .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
   .modal-content { background: var(--card-solid); border: 1px solid var(--border); padding: 22px; border-radius: 24px; max-width: 480px; width: 100%; max-height: 85vh; overflow: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
   @keyframes scaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .modal-content img { max-width: 100%; border-radius: 12px; margin-top: 10px; }
   .modal-content iframe { width: 100%; height: 60vh; border: none; margin-top: 10px; border-radius: 12px; }
 
-  /* PIN Lock Screen Apple Style */
   #pinLockScreen { position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(30px); }
   .pin-dots { display: flex; gap: 14px; margin-bottom: 24px; }
   .pin-dot { width: 14px; height: 14px; border: 2px solid var(--text-muted); border-radius: 50%; transition: all 0.2s; }
@@ -211,8 +207,8 @@
 
 <!-- PIN Lock Screen -->
 <div id="pinLockScreen" style="display:none;">
-  <h2>🔒 Enter Security PIN</h2>
-  <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Default PIN is 1234 (or leave blank if disabled)</p>
+  <h2>🔒 <span data-i18n="pin_title">Enter Security PIN</span></h2>
+  <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;" data-i18n="pin_sub">Default PIN is 1234</p>
   <div class="pin-dots">
     <div class="pin-dot" id="d1"></div>
     <div class="pin-dot" id="d2"></div>
@@ -239,7 +235,7 @@
   <div class="modal-content" style="text-align:center;" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <strong id="modalTitle" style="font-size:16px;">Full Details</strong>
-      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('previewModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span>Close</span></button>
+      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('previewModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span data-i18n="close">Close</span></button>
     </div>
     <div id="modalBody" style="text-align:left;"></div>
   </div>
@@ -250,14 +246,14 @@
   <div class="modal-content" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <strong id="spendModalTitle" style="color:var(--text-color); font-size:18px;">💸 Record Expense</strong>
-      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('spendModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span>Close</span></button>
+      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('spendModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span data-i18n="close">Close</span></button>
     </div>
     <p id="spendSourceInfo" style="font-size:13px; color:var(--text-muted); margin-top:0;"></p>
     
     <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Amount (<span id="spendCurrencyLabel">€</span>):</label>
     <input type="number" step="0.01" id="spendAmt" class="form-input" placeholder="e.g. 25.50">
     
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Where / What did you spend on?</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted);" data-i18n="where_label">Where / What did you spend on?</label>
     <input type="text" id="spendWhere" class="form-input" placeholder="e.g. Supermercato, Family, Gift">
     <div class="chip-group" id="spendChipsContainer">
       <span class="chip" onclick="setSpendTag('🛒 Supermercato')">🛒 Supermercato</span>
@@ -268,13 +264,13 @@
       <span class="chip" onclick="setSpendTag('🇧🇩 Family Support')">🇧🇩 Family Support</span>
     </div>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Date:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted);" data-i18n="date_label">Date:</label>
     <div class="custom-date-wrapper">
       <input type="date" id="spendDate">
     </div>
 
     <div class="btn-container">
-      <button type="button" class="app-btn success" onclick="confirmSpend()"><span class="icon">✅</span><span>Confirm</span></button>
+      <button type="button" class="app-btn success" onclick="confirmSpend()"><span class="icon">✅</span><span data-i18n="confirm">Confirm</span></button>
     </div>
   </div>
 </div>
@@ -284,20 +280,20 @@
   <div class="modal-content" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <strong id="settleModalTitle" style="color:var(--text-color); font-size:18px;">🤝 Settle / Receive Money</strong>
-      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('settleModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span>Close</span></button>
+      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('settleModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span data-i18n="close">Close</span></button>
     </div>
     <p id="settleInfo" style="font-size:13px; color:var(--text-muted); margin-top:0;"></p>
 
     <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Amount (€):</label>
     <input type="number" step="0.01" id="settleAmt" class="form-input" placeholder="e.g. 50">
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Destination / Source:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted);" data-i18n="dest_label">Destination / Source:</label>
     <select id="settleDestination" class="form-input">
       <option value="cash">💵 Cash in Hand</option>
     </select>
 
     <div class="btn-container">
-      <button type="button" class="app-btn success" onclick="confirmSettle()"><span class="icon">✅</span><span>Update Balance</span></button>
+      <button type="button" class="app-btn success" onclick="confirmSettle()"><span class="icon">✅</span><span data-i18n="update_balance">Update Balance</span></button>
     </div>
   </div>
 </div>
@@ -306,26 +302,26 @@
 <div id="rescheduleModal" class="modal" onclick="closeModal('rescheduleModal', event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <strong style="color:var(--text-color); font-size:18px;">📅 Reschedule Appointment</strong>
-      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('rescheduleModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span>Close</span></button>
+      <strong style="color:var(--text-color); font-size:18px;">📅 <span data-i18n="reschedule_title">Reschedule Appointment</span></strong>
+      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('rescheduleModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span data-i18n="close">Close</span></button>
     </div>
     <p id="rescheduleInfo" style="font-size:13px; color:var(--text-muted); margin-top:0;"></p>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">New Appointment Date:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted);" data-i18n="new_date_label">New Appointment Date:</label>
     <div class="custom-date-wrapper">
       <input type="date" id="rescheduleDate">
     </div>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">New Appointment Time:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="new_time_label">New Appointment Time:</label>
     <div class="custom-date-wrapper">
       <input type="time" id="rescheduleTime">
     </div>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">Reason / Note for Rescheduling:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="reason_label">Reason / Note for Rescheduling:</label>
     <input type="text" id="rescheduleReason" class="form-input" placeholder="e.g. Office postponed date">
 
     <div class="btn-container">
-      <button type="button" class="app-btn success" onclick="confirmReschedule()"><span class="icon">✅</span><span>Save Reschedule</span></button>
+      <button type="button" class="app-btn success" onclick="confirmReschedule()"><span class="icon">✅</span><span data-i18n="save_reschedule">Save Reschedule</span></button>
     </div>
   </div>
 </div>
@@ -334,44 +330,35 @@
 <div id="cancelApptModal" class="modal" onclick="closeModal('cancelApptModal', event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <strong style="color:var(--text-color); font-size:18px;">❌ Cancel Appointment</strong>
-      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('cancelApptModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span>Close</span></button>
+      <strong style="color:var(--text-color); font-size:18px;">❌ <span data-i18n="cancel_appt_title">Cancel Appointment</span></strong>
+      <button type="button" class="app-btn danger" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="document.getElementById('cancelApptModal').style.display='none'"><span class="icon" style="font-size:14px;">✖</span><span data-i18n="close">Close</span></button>
     </div>
     <p id="cancelApptInfo" style="font-size:13px; color:var(--text-muted); margin-top:0;"></p>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">Reason for Cancellation:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="cancel_reason_label">Reason for Cancellation:</label>
     <input type="text" id="cancelApptReason" class="form-input" placeholder="e.g. Done online, Not needed anymore">
 
     <div class="btn-container">
-      <button type="button" class="app-btn danger" onclick="confirmCancelAppt()"><span class="icon">❌</span><span>Confirm Cancellation</span></button>
+      <button type="button" class="app-btn danger" onclick="confirmCancelAppt()"><span class="icon">❌</span><span data-i18n="confirm_cancel">Confirm Cancellation</span></button>
     </div>
   </div>
 </div>
 
 <header>
   <h1>🇮🇹 ProbashiMate <span style="font-size:11px; background:var(--info); color:#fff; padding:3px 8px; border-radius:6px; font-weight:700;">PRO</span></h1>
-  <div class="header-controls">
-    <button type="button" class="select-pill" onclick="requestNotificationPermission()" title="Enable Smart Alerts">🔔 Alerts</button>
-    <select id="themeSelector" class="select-pill" onchange="changeTheme(this.value)">
-      <option value="dark">🌙 Dark OLED</option>
-      <option value="light">☀️ Light Clean</option>
-      <option value="emerald">🟢 Emerald Pro</option>
-      <option value="midnight">💜 Midnight Royal</option>
-    </select>
-  </div>
 </header>
 
 <!-- Navigation Tabs -->
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('home', this)">🏠 Dashboard</div>
-  <div class="tab" onclick="switchTab('search', this)">🔍 Search</div>
-  <div class="tab" onclick="switchTab('summary', this)">📊 Summary & Forecasting</div>
-  <div class="tab" onclick="switchTab('banks', this)">💳 Wallet</div>
-  <div class="tab" onclick="switchTab('loans', this)">🤝 Lent & Borrow</div>
-  <div class="tab" onclick="switchTab('docs', this)">📄 My Docs</div>
-  <div class="tab" onclick="switchTab('appts', this)">📅 Appts</div>
-  <div class="tab" onclick="switchTab('contacts', this)">⚖️ Lawyer</div>
-  <div class="tab" onclick="switchTab('backup', this)">☁️ Backup</div>
+  <div class="tab active" onclick="switchTab('home', this)" data-i18n="tab_home">🏠 Dashboard</div>
+  <div class="tab" onclick="switchTab('search', this)" data-i18n="tab_search">🔍 Search</div>
+  <div class="tab" onclick="switchTab('summary', this)" data-i18n="tab_summary">📊 Summary</div>
+  <div class="tab" onclick="switchTab('banks', this)" data-i18n="tab_wallet">💳 Wallet</div>
+  <div class="tab" onclick="switchTab('loans', this)" data-i18n="tab_lent">🤝 Lent & Borrow</div>
+  <div class="tab" onclick="switchTab('docs', this)" data-i18n="tab_docs">📄 My Docs</div>
+  <div class="tab" onclick="switchTab('appts', this)" data-i18n="tab_appts">📅 Appts</div>
+  <div class="tab" onclick="switchTab('contacts', this)" data-i18n="tab_lawyer">⚖️ Lawyer</div>
+  <div class="tab" onclick="switchTab('settings', this)" data-i18n="tab_settings">⚙️ Settings</div>
 </div>
 
 <!-- 1. HOME -->
@@ -382,37 +369,37 @@
   <div class="top-stats-row">
     <div class="top-stat-card eur-card">
       <div>
-        <div class="top-stat-title">Net Available (€)</div>
+        <div class="top-stat-title" data-i18n="net_available">Net Available (€)</div>
         <div class="top-stat-value" id="dashGrandTotal" style="color:var(--info);">€0.00</div>
       </div>
-      <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">Banks + Cash</div>
+      <div style="font-size:10px; color:var(--text-muted); margin-top:8px;" data-i18n="banks_cash">Banks + Cash</div>
     </div>
     <div class="top-stat-card bdt-card">
       <div>
-        <div class="top-stat-title">Bangladesh (BDT)</div>
+        <div class="top-stat-title" data-i18n="bdt_title">Bangladesh (BDT)</div>
         <div class="top-stat-value" id="dashTotalBdt" style="color:var(--success);">৳0.00</div>
       </div>
-      <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">Total BD Wallets</div>
+      <div style="font-size:10px; color:var(--text-muted); margin-top:8px;" data-i18n="bd_wallets">Total BD Wallets</div>
     </div>
   </div>
 
   <div class="summary-grid">
     <div class="summary-box">
-      <span>💳 Bank Balance</span>
+      <span data-i18n="bank_balance">💳 Bank Balance</span>
       <strong id="dashTotalBank">€0.00</strong>
     </div>
     <div class="summary-box">
-      <span>💵 Cash in Hand</span>
+      <span data-i18n="cash_in_hand">💵 Cash in Hand</span>
       <strong id="dashTotalCash" style="color:var(--success);">€0.00</strong>
     </div>
   </div>
 
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0;"><span>📈 Monthly Expense Comparison (EUR)</span></h3>
+      <h3 style="margin:0;"><span data-i18n="monthly_expense_comp">📈 Monthly Expense Comparison (EUR)</span></h3>
       <span id="expenseTrendBadge" class="trend-pill trend-neutral">0% vs Last Month</span>
     </div>
-    <p id="expenseInsightText" style="font-size:12px; color:var(--text-muted); margin-top:0;">Comparing this month's spending against last month.</p>
+    <p id="expenseInsightText" style="font-size:12px; color:var(--text-muted); margin-top:0;" data-i18n="comparing_spending">Comparing this month's spending against last month.</p>
     
     <div class="chart-box">
       <div class="chart-row">
@@ -439,31 +426,31 @@
 
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0;"><span>🐷 Savings & Goals Progress</span></h3>
+      <h3 style="margin:0;"><span data-i18n="savings_goals">🐷 Savings & Goals Progress</span></h3>
       <strong id="dashTotalPiggy" style="color:var(--success); font-size:15px;">€0.00</strong>
     </div>
     <div id="dashSavingsVisual">
-      <p style="font-size:12px; color:var(--text-muted); margin:0;">No savings goals set yet. Add goals in Wallet.</p>
+      <p style="font-size:12px; color:var(--text-muted); margin:0;" data-i18n="no_savings">No savings goals set yet. Add goals in Wallet.</p>
     </div>
   </div>
 
   <div class="card">
-    <h3>📅 <span>Upcoming Appointments</span></h3>
-    <div id="dashApptList" style="font-size:13px; color:var(--text-muted);">No upcoming appointments.</div>
+    <h3>📅 <span data-i18n="upcoming_appts">Upcoming Appointments</span></h3>
+    <div id="dashApptList" style="font-size:13px; color:var(--text-muted);" data-i18n="no_upcoming">No upcoming appointments.</div>
   </div>
 
   <div class="card">
-    <h3>⚠️ <span>Document Expiry Status</span></h3>
-    <div id="dashDocStatus" style="font-size:13px; color:var(--text-muted);">No documents uploaded yet.</div>
+    <h3>⚠️ <span data-i18n="doc_expiry_status">Document Expiry Status</span></h3>
+    <div id="dashDocStatus" style="font-size:13px; color:var(--text-muted);" data-i18n="no_docs_uploaded">No documents uploaded yet.</div>
   </div>
 </div>
 
 <!-- 2. SEARCH -->
 <div class="content" id="searchContent">
   <div class="card">
-    <h3>🔍 <span>Universal Search</span></h3>
-    <p style="font-size:12px; color:var(--text-muted); margin-top:0;">Search by person name, bank card, transaction, or document. Tap any result to view full info.</p>
-    <input type="text" id="tabSearchInput" class="form-input" placeholder="Type name, card, store, doc name..." oninput="handleTabSearch(this.value)">
+    <h3>🔍 <span data-i18n="universal_search">Universal Search</span></h3>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:0;" data-i18n="search_desc">Search by person name, bank card, transaction, or document. Tap any result to view full info.</p>
+    <input type="text" id="tabSearchInput" class="form-input" placeholder="Type name, card, store, doc name..." oninput="handleTabSearch(this.value)" data-i18n-placeholder="search_placeholder">
     <div id="tabSearchResults" style="margin-top:12px;"></div>
   </div>
 </div>
@@ -471,28 +458,28 @@
 <!-- 3. SUMMARY & FORECASTING -->
 <div class="content" id="summaryContent">
   <div class="card">
-    <h3 style="margin-bottom:10px;">📊 Advanced Financial Report & Forecasting</h3>
+    <h3 style="margin-bottom:10px;" data-i18n="financial_report_hub">📊 Advanced Financial Report & Forecasting</h3>
     
     <div class="filter-bar">
-      <button type="button" class="filter-pill active" id="modeMonthBtn" onclick="setSummaryMode('month')">🗓️ Month-Wise</button>
-      <button type="button" class="filter-pill" id="modeDateBtn" onclick="setSummaryMode('date')">📅 Date-Wise</button>
-      <button type="button" class="filter-pill" id="modeAllBtn" onclick="setSummaryMode('all')">♾️ All-Time</button>
+      <button type="button" class="filter-pill active" id="modeMonthBtn" onclick="setSummaryMode('month')" data-i18n="month_wise">🗓️ Month-Wise</button>
+      <button type="button" class="filter-pill" id="modeDateBtn" onclick="setSummaryMode('date')" data-i18n="date_wise">📅 Date-Wise</button>
+      <button type="button" class="filter-pill" id="modeAllBtn" onclick="setSummaryMode('all')" data-i18n="all_time">♾️ All-Time</button>
     </div>
 
     <div class="filter-bar" style="margin-top:8px;">
-      <button type="button" class="filter-pill active" id="currEurBtn" onclick="setSummaryCurrency('EUR')">🇪🇺 EUR Expenses</button>
-      <button type="button" class="filter-pill" id="currBdtBtn" onclick="setSummaryCurrency('BDT')">🇧🇩 BDT Expenses</button>
+      <button type="button" class="filter-pill active" id="currEurBtn" onclick="setSummaryCurrency('EUR')" data-i18n="eur_expenses">🇪🇺 EUR Expenses</button>
+      <button type="button" class="filter-pill" id="currBdtBtn" onclick="setSummaryCurrency('BDT')" data-i18n="bdt_expenses">🇧🇩 BDT Expenses</button>
     </div>
 
     <div id="monthPickerBox" style="margin-bottom:12px;">
-      <label style="font-size:11px; color:var(--text-muted);">Select Month:</label>
+      <label style="font-size:11px; color:var(--text-muted);" data-i18n="select_month">Select Month:</label>
       <div class="custom-date-wrapper" style="margin-top:4px;">
         <input type="month" id="summaryMonthPicker" onchange="renderAdvancedSummary()">
       </div>
     </div>
 
     <div id="datePickerBox" style="display:none; margin-bottom:12px;">
-      <label style="font-size:11px; color:var(--text-muted);">Select Exact Date:</label>
+      <label style="font-size:11px; color:var(--text-muted);" data-i18n="select_exact_date">Select Exact Date:</label>
       <div class="custom-date-wrapper" style="margin-top:4px;">
         <input type="date" id="summaryDatePicker" onchange="renderAdvancedSummary()">
       </div>
@@ -509,19 +496,19 @@
         <strong id="sumPeriodTotal" style="font-size:24px; color:var(--danger);">€0.00</strong>
       </div>
       <div class="summary-box">
-        <span>💳 Bank / Card Spent</span>
+        <span data-i18n="card_spent">💳 Bank / Card Spent</span>
         <strong id="sumPeriodBank" style="color:var(--info);">€0.00</strong>
       </div>
       <div class="summary-box">
-        <span>💵 Cash Spent</span>
+        <span data-i18n="cash_spent">💵 Cash Spent</span>
         <strong id="sumPeriodCash" style="color:var(--success);">€0.00</strong>
       </div>
       <div class="summary-box">
-        <span>🟢 Active Pabo (Lent)</span>
+        <span data-i18n="active_pabo">🟢 Active Pabo (Lent)</span>
         <strong id="sumTotalPabo" style="color:var(--success);">€0.00</strong>
       </div>
       <div class="summary-box">
-        <span>🔴 Active Dibo (Debt)</span>
+        <span data-i18n="active_dibo">🔴 Active Dibo (Debt)</span>
         <strong id="sumTotalDibo" style="color:var(--danger);">€0.00</strong>
       </div>
     </div>
@@ -535,17 +522,17 @@
   </div>
 
   <div class="card">
-    <h3>🍩 <span>Expense Visual Analytics (Pie Chart)</span></h3>
+    <h3>🍩 <span data-i18n="visual_analytics">Expense Visual Analytics (Pie Chart)</span></h3>
     <div id="sumDonutChartArea"></div>
   </div>
 
   <div class="card">
-    <h3 id="breakdownHeading">📍 Category Breakdown</h3>
+    <h3 id="breakdownHeading" data-i18n="category_breakdown">📍 Category Breakdown</h3>
     <div id="sumCategoryBreakdown"></div>
   </div>
 
   <div class="card">
-    <h3 id="historyHeading">🧾 Transaction History</h3>
+    <h3 id="historyHeading" data-i18n="transaction_history">🧾 Transaction History</h3>
     <div id="sumTransactionList"></div>
   </div>
 </div>
@@ -553,54 +540,54 @@
 <!-- 4. WALLET -->
 <div class="content" id="banksContent">
   <div class="card">
-    <h3>💵 <span>Cash in Hand (Pocket / Home Euro)</span></h3>
+    <h3>💵 <span data-i18n="cash_in_hand_title">Cash in Hand (Pocket / Home Euro)</span></h3>
     <div class="cash-card">
       <div>
-        <span style="font-size:12px; color:#a7f3d0;">Available Physical Cash</span>
+        <span style="font-size:12px; color:#a7f3d0;" data-i18n="available_physical">Available Physical Cash</span>
         <div class="cash-amount" id="cashDisplay">€0.00</div>
       </div>
     </div>
     <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="adjustCash('set')"><span class="icon">✏️</span><span>Set Cash</span></button>
-      <button type="button" class="app-btn success" onclick="adjustCash('add')"><span class="icon">➕</span><span>Add Cash</span></button>
-      <button type="button" class="app-btn danger" onclick="openSpendModal('cash', -1)"><span class="icon">💸</span><span>Spend</span></button>
+      <button type="button" class="app-btn primary" onclick="adjustCash('set')"><span class="icon">✏️</span><span data-i18n="set_cash">Set Cash</span></button>
+      <button type="button" class="app-btn success" onclick="adjustCash('add')"><span class="icon">➕</span><span data-i18n="add_cash">Add Cash</span></button>
+      <button type="button" class="app-btn danger" onclick="openSpendModal('cash', -1)"><span class="icon">💸</span><span data-i18n="spend">Spend</span></button>
     </div>
   </div>
 
   <div class="card">
-    <h3>💳 <span>My Bank Cards & Balances (EUR)</span></h3>
-    <input type="text" id="bankName" class="form-input" placeholder="Bank Name (e.g. PostePay, UniCredit)" oninput="checkExistingBank()">
-    <input type="text" id="cardLast4" maxlength="19" class="form-input" placeholder="Card Number / Last 4 Digits" oninput="checkExistingBank()">
+    <h3>💳 <span data-i18n="bank_cards_title">My Bank Cards & Balances (EUR)</span></h3>
+    <input type="text" id="bankName" class="form-input" placeholder="Bank Name (e.g. PostePay, UniCredit)" oninput="checkExistingBank()" data-i18n-placeholder="bank_name_ph">
+    <input type="text" id="cardLast4" maxlength="19" class="form-input" placeholder="Card Number / Last 4 Digits" oninput="checkExistingBank()" data-i18n-placeholder="card_num_ph">
     <div id="bankDetectNotice" class="detect-notice"></div>
-    <input type="number" step="0.01" id="bankBal" class="form-input" placeholder="Amount (€)">
+    <input type="number" step="0.01" id="bankBal" class="form-input" placeholder="Amount (€)" data-i18n-placeholder="amount_eur_ph">
     
     <div class="btn-container">
-      <button type="button" class="app-btn primary" id="bankSubmitBtn" onclick="saveBank()"><span class="icon">💾</span><span>Add Card</span></button>
+      <button type="button" class="app-btn primary" id="bankSubmitBtn" onclick="saveBank()"><span class="icon">💾</span><span data-i18n="add_card">Add Card</span></button>
     </div>
     <div id="bankList"></div>
   </div>
 
   <div class="card" style="border-color:rgba(50,215,75,0.3);">
-    <h3 style="color:var(--success);">🇧🇩 <span>Bangladesh Accounts & Wallets (BDT)</span></h3>
-    <p style="font-size:12px; color:var(--text-muted); margin-top:0;">Manage separate assets in Bangladesh (bKash, Nagad, BD Bank accounts).</p>
-    <input type="text" id="bdtName" class="form-input" placeholder="Account Name (e.g. bKash Personal, EBL BD)">
-    <input type="text" id="bdtNumber" class="form-input" placeholder="Account Number / Phone (Optional)">
-    <input type="number" step="0.01" id="bdtBal" class="form-input" placeholder="Amount (৳ BDT)">
+    <h3 style="color:var(--success);">🇧🇩 <span data-i18n="bdt_accounts_title">Bangladesh Accounts & Wallets (BDT)</span></h3>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:0;" data-i18n="bdt_accounts_desc">Manage separate assets in Bangladesh (bKash, Nagad, BD Bank accounts).</p>
+    <input type="text" id="bdtName" class="form-input" placeholder="Account Name (e.g. bKash Personal, EBL BD)" data-i18n-placeholder="bdt_name_ph">
+    <input type="text" id="bdtNumber" class="form-input" placeholder="Account Number / Phone (Optional)" data-i18n-placeholder="bdt_num_ph">
+    <input type="number" step="0.01" id="bdtBal" class="form-input" placeholder="Amount (৳ BDT)" data-i18n-placeholder="bdt_amount_ph">
     
     <div class="btn-container">
-      <button type="button" class="app-btn success" onclick="saveBdtAccount()"><span class="icon">💾</span><span>Add BDT Account</span></button>
+      <button type="button" class="app-btn success" onclick="saveBdtAccount()"><span class="icon">💾</span><span data-i18n="add_bdt_account">Add BDT Account</span></button>
     </div>
     <div id="bdtList"></div>
   </div>
 
   <div class="card">
-    <h3>🐷 <span>Piggy Bank (Dream Goals)</span></h3>
-    <input type="text" id="goalTitle" class="form-input" placeholder="Dream Goal (e.g. New Phone, Savings)">
-    <input type="number" step="0.01" id="goalTarget" class="form-input" placeholder="Target Amount (€)">
-    <input type="number" step="0.01" id="goalSaved" class="form-input" placeholder="Already Saved (€)">
+    <h3>🐷 <span data-i18n="piggy_bank_title">Piggy Bank (Dream Goals)</span></h3>
+    <input type="text" id="goalTitle" class="form-input" placeholder="Dream Goal (e.g. New Phone, Savings)" data-i18n-placeholder="goal_title_ph">
+    <input type="number" step="0.01" id="goalTarget" class="form-input" placeholder="Target Amount (€)" data-i18n-placeholder="target_eur_ph">
+    <input type="number" step="0.01" id="goalSaved" class="form-input" placeholder="Already Saved (€)" data-i18n-placeholder="saved_eur_ph">
     
     <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="saveGoal()"><span class="icon">🎯</span><span>Save Goal</span></button>
+      <button type="button" class="app-btn primary" onclick="saveGoal()"><span class="icon">🎯</span><span data-i18n="save_goal">Save Goal</span></button>
     </div>
     <div id="goalList"></div>
   </div>
@@ -610,10 +597,10 @@
 <div class="content" id="loansContent">
   <div class="card" style="border-color:rgba(50,215,75,0.3);">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="color:var(--success); margin:0;">✅ <span>Settled History (Archive)</span></h3>
+      <h3 style="color:var(--success); margin:0;">✅ <span data-i18n="settled_history_title">Settled History (Archive)</span></h3>
       <button type="button" class="app-btn success" id="toggleSettledBtn" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="toggleSettledView()"><span class="icon" style="font-size:13px;">👁️</span><span id="settledToggleBtnText">Show Settled</span></button>
     </div>
-    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; margin-bottom:0;">Tap button above to view or hide settled records.</p>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; margin-bottom:0;" data-i18n="settled_history_desc">Tap button above to view or hide settled records.</p>
     
     <div id="settledLoanContainer" style="display:none; margin-top:12px; border-top:1px solid var(--border); padding-top:10px;">
       <div id="settledLoanList"></div>
@@ -621,22 +608,22 @@
   </div>
 
   <div class="card">
-    <h3>🤝 <span>Add Lent / Borrow Record</span></h3>
+    <h3>🤝 <span data-i18n="add_lent_title">Add Lent / Borrow Record</span></h3>
     <select id="loanType" class="form-input">
-      <option value="pabo">🟢 Lent to someone (Kar kache Pabo)</option>
-      <option value="dibo">🔴 Borrowed from someone (Kar kache Dibo)</option>
+      <option value="pabo" data-i18n="lent_option">🟢 Lent to someone (Kar kache Pabo)</option>
+      <option value="dibo" data-i18n="borrow_option">🔴 Borrowed from someone (Kar kache Dibo)</option>
     </select>
-    <input type="text" id="loanPerson" class="form-input" placeholder="Person Name (e.g. Rahim Bhai)">
-    <input type="number" step="0.01" id="loanAmt" class="form-input" placeholder="Total Amount (€)">
-    <input type="text" id="loanNote" class="form-input" placeholder="Note / Reason (Optional)">
+    <input type="text" id="loanPerson" class="form-input" placeholder="Person Name (e.g. Rahim Bhai)" data-i18n-placeholder="person_name_ph">
+    <input type="number" step="0.01" id="loanAmt" class="form-input" placeholder="Total Amount (€)" data-i18n-placeholder="total_amt_ph">
+    <input type="text" id="loanNote" class="form-input" placeholder="Note / Reason (Optional)" data-i18n-placeholder="note_ph">
     
     <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="saveLoan()"><span class="icon">💾</span><span>Save Record</span></button>
+      <button type="button" class="app-btn primary" onclick="saveLoan()"><span class="icon">💾</span><span data-i18n="save_record">Save Record</span></button>
     </div>
   </div>
 
   <div class="card">
-    <h3>📋 <span>Active Lent & Borrow List</span></h3>
+    <h3>📋 <span data-i18n="active_lent_title">Active Lent & Borrow List</span></h3>
     <div id="loanList"></div>
   </div>
 </div>
@@ -644,24 +631,24 @@
 <!-- 6. DOCUMENT VAULT -->
 <div class="content" id="docsContent">
   <div class="card">
-    <h3>📄 <span>Upload & Track Documents</span></h3>
-    <input type="text" id="docName" class="form-input" placeholder="Document Name (e.g. Permesso, Passport)">
+    <h3>📄 <span data-i18n="upload_doc_title">Upload & Track Documents</span></h3>
+    <input type="text" id="docName" class="form-input" placeholder="Document Name (e.g. Permesso, Passport)" data-i18n-placeholder="doc_name_ph">
     
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">Expiry Date:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="expiry_date">Expiry Date:</label>
     <div class="custom-date-wrapper">
       <input type="date" id="docExpiry">
     </div>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">Upload Photo / PDF (Optional):</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="upload_file_label">Upload Photo / PDF (Optional):</label>
     <input type="file" id="docFile" accept="image/*,application/pdf" class="form-input">
     
     <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="saveDoc()"><span class="icon">💾</span><span>Save Document</span></button>
+      <button type="button" class="app-btn primary" onclick="saveDoc()"><span class="icon">💾</span><span data-i18n="save_document">Save Document</span></button>
     </div>
   </div>
 
   <div class="card">
-    <h3>🗂️ <span>Saved Documents</span></h3>
+    <h3>🗂️ <span data-i18n="saved_docs_title">Saved Documents</span></h3>
     <div id="docList"></div>
   </div>
 </div>
@@ -670,10 +657,10 @@
 <div class="content" id="apptsContent">
   <div class="card" style="border-color:rgba(10,132,255,0.3);">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="margin:0; color:var(--info);">🗂️ <span>Appointment History & Archive</span></h3>
+      <h3 style="margin:0; color:var(--info);">🗂️ <span data-i18n="appt_archive_title">Appointment History & Archive</span></h3>
       <button type="button" class="app-btn info" id="toggleArchiveBtn" style="padding:6px 12px; flex:none; border-radius:12px;" onclick="toggleArchiveView()"><span class="icon" style="font-size:13px;">👁️</span><span id="archiveToggleBtnText">Show Archive</span></button>
     </div>
-    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; margin-bottom:0;">Canceled, completed, or past appointments are safely stored here.</p>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; margin-bottom:0;" data-i18n="appt_archive_desc">Canceled, completed, or past appointments are safely stored here.</p>
     
     <div id="apptArchiveContainer" style="display:none; margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
       <div id="apptArchiveList"></div>
@@ -681,28 +668,28 @@
   </div>
 
   <div class="card">
-    <h3>📅 <span>Schedule New Appointment</span></h3>
-    <input type="text" id="apptTitle" class="form-input" placeholder="Purpose (e.g. Questura, Dottore, Prefettura)">
+    <h3>📅 <span data-i18n="schedule_appt_title">Schedule New Appointment</span></h3>
+    <input type="text" id="apptTitle" class="form-input" placeholder="Purpose (e.g. Questura, Dottore, Prefettura)" data-i18n-placeholder="appt_purpose_ph">
     
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">Appointment Date:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="appt_date_label">Appointment Date:</label>
     <div class="custom-date-wrapper">
       <input type="date" id="apptDate">
     </div>
 
-    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;">Appointment Time:</label>
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:6px;" data-i18n="appt_time_label">Appointment Time:</label>
     <div class="custom-date-wrapper">
       <input type="time" id="apptTime">
     </div>
 
-    <input type="text" id="apptLocation" class="form-input" placeholder="Location / Address (Optional)" style="margin-top:6px;">
+    <input type="text" id="apptLocation" class="form-input" placeholder="Location / Address (Optional)" style="margin-top:6px;" data-i18n-placeholder="location_ph">
     
     <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="saveAppt()"><span class="icon">📅</span><span>Save Appointment</span></button>
+      <button type="button" class="app-btn primary" onclick="saveAppt()"><span class="icon">📅</span><span data-i18n="save_appt">Save Appointment</span></button>
     </div>
   </div>
 
   <div class="card">
-    <h3>🗓️ <span>My Appointments</span></h3>
+    <h3>🗓️ <span data-i18n="my_appointments">My Appointments</span></h3>
     <div id="apptList"></div>
   </div>
 </div>
@@ -710,63 +697,327 @@
 <!-- 8. LAWYER & EMERGENCY -->
 <div class="content" id="contactsContent">
   <div class="card">
-    <h3>⚖️ <span>My Lawyer (Avvocato) Info</span></h3>
-    <input type="text" id="lawyerName" class="form-input" placeholder="Lawyer Name">
-    <input type="tel" id="lawyerPhone" class="form-input" placeholder="Phone Number">
-    <input type="text" id="lawyerAddress" class="form-input" placeholder="Studio Address">
-    <input type="text" id="lawyerNote" class="form-input" placeholder="Case Note">
+    <h3>⚖️ <span data-i18n="lawyer_info_title">My Lawyer (Avvocato) Info</span></h3>
+    <input type="text" id="lawyerName" class="form-input" placeholder="Lawyer Name" data-i18n-placeholder="lawyer_name_ph">
+    <input type="tel" id="lawyerPhone" class="form-input" placeholder="Phone Number" data-i18n-placeholder="phone_ph">
+    <input type="text" id="lawyerAddress" class="form-input" placeholder="Studio Address" data-i18n-placeholder="address_ph">
+    <input type="text" id="lawyerNote" class="form-input" placeholder="Case Note" data-i18n-placeholder="case_note_ph">
     
     <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="saveLawyer()"><span class="icon">💾</span><span>Save Lawyer Info</span></button>
+      <button type="button" class="app-btn primary" onclick="saveLawyer()"><span class="icon">💾</span><span data-i18n="save_lawyer">Save Lawyer Info</span></button>
     </div>
     <div id="lawyerDisplay" style="margin-top:12px;"></div>
   </div>
 
   <div class="card">
-    <h3>🚨 <span>Italy Emergency Contacts</span></h3>
+    <h3>🚨 <span data-i18n="emergency_title">Italy Emergency Contacts</span></h3>
     <div class="btn-container" style="border-top:none; padding-top:0; flex-direction:column;">
-      <button type="button" class="app-btn danger" style="width:100%; flex:none; padding:12px;" onclick="window.location.href='tel:112'"><span class="icon">🚓</span><span>Carabinieri / Emergency (112)</span></button>
-      <button type="button" class="app-btn danger" style="width:100%; flex:none; padding:12px; background:rgba(255,159,10,0.12); color:var(--warning); border-color:rgba(255,159,10,0.3);" onclick="window.location.href='tel:118'"><span class="icon">🚑</span><span>Ambulance / Pronto Soccorso (118)</span></button>
-      <button type="button" class="app-btn danger" style="width:100%; flex:none; padding:12px; background:rgba(255,69,58,0.12); color:var(--danger); border-color:rgba(255,69,58,0.3);" onclick="window.location.href='tel:115'"><span class="icon">🚒</span><span>Fire Brigade (115)</span></button>
+      <button type="button" class="app-btn danger" style="width:100%; flex:none; padding:12px;" onclick="window.location.href='tel:112'"><span class="icon">🚓</span><span data-i18n="emergency_112">Carabinieri / Emergency (112)</span></button>
+      <button type="button" class="app-btn danger" style="width:100%; flex:none; padding:12px; background:rgba(255,159,10,0.12); color:var(--warning); border-color:rgba(255,159,10,0.3);" onclick="window.location.href='tel:118'"><span class="icon">🚑</span><span data-i18n="emergency_118">Ambulance / Pronto Soccorso (118)</span></button>
+      <button type="button" class="app-btn danger" style="width:100%; flex:none; padding:12px; background:rgba(255,69,58,0.12); color:var(--danger); border-color:rgba(255,69,58,0.3);" onclick="window.location.href='tel:115'"><span class="icon">🚒</span><span data-i18n="emergency_115">Fire Brigade (115)</span></button>
     </div>
   </div>
 </div>
 
-<!-- 9. BACKUP & SECURITY -->
-<div class="content" id="backupContent">
+<!-- 9. SETTINGS (Language, Theme, Alerts, Backup & Security) -->
+<div class="content" id="settingsContent">
+  <!-- Language & Themes Settings -->
   <div class="card">
-    <h3>🔒 <span>App Security PIN</span></h3>
-    <input type="password" maxlength="4" id="newPinInput" class="form-input" placeholder="Set New 4-Digit PIN">
-    <div class="btn-container">
-      <button type="button" class="app-btn primary" onclick="updatePin()"><span class="icon">🔒</span><span>Update PIN</span></button>
-    </div>
+    <h3>🌐 <span data-i18n="language_theme_title">Language & Appearance</span></h3>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:0;" data-i18n="lang_theme_desc">Select your preferred language and app color theme.</p>
+    
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:8px;" data-i18n="select_language">Select Language:</label>
+    <select id="langSelector" class="form-input" onchange="changeLanguage(this.value)">
+      <option value="en">🇬🇧 English</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="es">🇪🇸 Español</option>
+    </select>
+
+    <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-top:12px;" data-i18n="select_theme">Select Theme Style:</label>
+    <select id="themeSelector" class="form-input" onchange="changeTheme(this.value)">
+      <option value="dark">🌙 Dark OLED</option>
+      <option value="light">☀️ Light Clean</option>
+      <option value="emerald">🟢 Emerald Pro</option>
+      <option value="midnight">💜 Midnight Royal</option>
+    </select>
   </div>
 
+  <!-- Smart Alerts Settings -->
   <div class="card">
-    <h3>☁️ <span>Export Backup</span></h3>
-    <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Download backup file or copy text for Notes/WhatsApp.</p>
+    <h3>🔔 <span data-i18n="smart_alerts_title">Smart Alerts & Notifications</span></h3>
+    <p style="font-size:13px; color:var(--text-muted); margin-top:0;" data-i18n="alerts_desc">Enable browser notifications for urgent document expiry dates and appointments.</p>
     <div class="btn-container" style="border-top:none; padding-top:0;">
-      <button type="button" class="app-btn primary" onclick="exportBackup()"><span class="icon">📥</span><span>Download / Copy Backup</span></button>
+      <button type="button" class="app-btn info" style="width:100%; flex:none; padding:12px;" onclick="requestNotificationPermission()"><span class="icon">🔔</span><span data-i18n="enable_notifications">Enable Browser Notifications</span></button>
+    </div>
+  </div>
+
+  <!-- App Security PIN -->
+  <div class="card">
+    <h3>🔒 <span data-i18n="app_security_pin">App Security PIN</span></h3>
+    <input type="password" maxlength="4" id="newPinInput" class="form-input" placeholder="Set New 4-Digit PIN" data-i18n-placeholder="pin_ph">
+    <div class="btn-container">
+      <button type="button" class="app-btn primary" onclick="updatePin()"><span class="icon">🔒</span><span data-i18n="update_pin">Update PIN</span></button>
+    </div>
+  </div>
+
+  <!-- Backup & Restore -->
+  <div class="card">
+    <h3>☁️ <span data-i18n="export_backup">Export Backup</span></h3>
+    <p style="font-size:13px; color:var(--text-muted); margin-top:0;" data-i18n="export_desc">Download backup file or copy text for Notes/WhatsApp.</p>
+    <div class="btn-container" style="border-top:none; padding-top:0;">
+      <button type="button" class="app-btn primary" onclick="exportBackup()"><span class="icon">📥</span><span data-i18n="download_backup">Download / Copy Backup</span></button>
     </div>
   </div>
 
   <div class="card">
-    <h3>📲 <span>Restore Backup</span></h3>
-    <label style="font-size:13px; font-weight:600; color:var(--text-color); display:block; margin-top:6px;">Option 1: Paste Backup Text</label>
+    <h3>📲 <span data-i18n="restore_backup">Restore Backup</span></h3>
+    <label style="font-size:13px; font-weight:600; color:var(--text-color); display:block; margin-top:6px;" data-i18n="option1_paste">Option 1: Paste Backup Text</label>
     <textarea id="pasteBackupInput" class="form-input" style="height:100px; font-family:monospace; font-size:12px;" placeholder='Paste copied backup text here'></textarea>
     
-    <label style="font-size:13px; font-weight:600; color:var(--text-muted); display:block; margin-top:12px;">Option 2: Upload Backup File (.json):</label>
+    <label style="font-size:13px; font-weight:600; color:var(--text-muted); display:block; margin-top:12px;" data-i18n="option2_upload">Option 2: Upload Backup File (.json):</label>
     <input type="file" id="importFile" accept=".json,application/json,text/plain" class="form-input" onchange="importBackup(event)">
     
     <div class="btn-container">
-      <button type="button" class="app-btn success" onclick="importBackupFromText()"><span class="icon">✅</span><span>Restore Text</span></button>
-      <button type="button" class="app-btn danger" onclick="resetAll()"><span class="icon">⚠️</span><span>Reset All</span></button>
+      <button type="button" class="app-btn success" onclick="importBackupFromText()"><span class="icon">✅</span><span data-i18n="restore_text">Restore Text</span></button>
+      <button type="button" class="app-btn danger" onclick="resetAll()"><span class="icon">⚠️</span><span data-i18n="reset_all">Reset All</span></button>
     </div>
   </div>
 </div>
 
 <script>
+  // Translations Dictionary
+  const translations = {
+    en: {
+      pin_title: "Enter Security PIN", pin_sub: "Default PIN is 1234", close: "Close", confirm: "Confirm",
+      where_label: "Where / What did you spend on?", date_label: "Date:", dest_label: "Destination / Source:",
+      update_balance: "Update Balance", reschedule_title: "Reschedule Appointment",
+      new_date_label: "New Appointment Date:", new_time_label: "New Appointment Time:",
+      reason_label: "Reason / Note for Rescheduling:", save_reschedule: "Save Reschedule",
+      cancel_appt_title: "Cancel Appointment", cancel_reason_label: "Reason for Cancellation:",
+      confirm_cancel: "Confirm Cancellation", tab_home: "🏠 Dashboard", tab_search: "🔍 Search",
+      tab_summary: "📊 Summary", tab_wallet: "💳 Wallet", tab_lent: "🤝 Lent",
+      tab_docs: "📄 Docs", tab_appts: "📅 Appts",
+      tab_lawyer: "⚖️ Lawyer", tab_settings: "⚙️ Settings", net_available: "Net Available (€)",
+      banks_cash: "Banks + Cash", bdt_title: "Bangladesh (BDT)", bd_wallets: "Total BD Wallets",
+      bank_balance: "💳 Bank Balance", cash_in_hand: "💵 Cash in Hand",
+      monthly_expense_comp: "📈 Monthly Expense Comparison (EUR)",
+      comparing_spending: "Comparing this month's spending against last month.",
+      savings_goals: "🐷 Savings & Goals Progress", no_savings: "No savings goals set yet. Add goals in Wallet.",
+      upcoming_appts: "Upcoming Appointments", no_upcoming: "No upcoming appointments.",
+      doc_expiry_status: "Document Expiry Status", no_docs_uploaded: "No documents uploaded yet.",
+      universal_search: "Universal Search",
+      search_desc: "Search by person name, bank card, transaction, or document.",
+      search_placeholder: "Type name, card, store, doc name...",
+      financial_report_hub: "📊 Advanced Financial Report & Forecasting", month_wise: "🗓️ Month-Wise",
+      date_wise: "📅 Date-Wise", all_time: "♾️ All-Time", eur_expenses: "🇪🇺 EUR Expenses",
+      bdt_expenses: "🇧🇩 BDT Expenses", select_month: "Select Month:", select_exact_date: "Select Exact Date:",
+      card_spent: "💳 Bank / Card Spent", cash_spent: "💵 Cash Spent", active_pabo: "🟢 Active Pabo (Lent)",
+      active_dibo: "🔴 Active Dibo (Debt)", visual_analytics: "Expense Visual Analytics (Pie Chart)",
+      category_breakdown: "📍 Category Breakdown", transaction_history: "🧾 Transaction History",
+      cash_in_hand_title: "Cash in Hand (Pocket / Home Euro)", available_physical: "Available Physical Cash",
+      set_cash: "Set Cash", add_cash: "Add Cash", spend: "Spend",
+      bank_cards_title: "My Bank Cards & Balances (EUR)", bank_name_ph: "Bank Name (e.g. PostePay)",
+      card_num_ph: "Card Number / Last 4 Digits", amount_eur_ph: "Amount (€)", add_card: "Add Card",
+      bdt_accounts_title: "Bangladesh Accounts & Wallets (BDT)",
+      bdt_accounts_desc: "Manage separate assets in Bangladesh (bKash, Nagad).",
+      bdt_name_ph: "Account Name (e.g. bKash)", bdt_num_ph: "Account Number / Phone",
+      bdt_amount_ph: "Amount (৳ BDT)", add_bdt_account: "Add BDT Account",
+      piggy_bank_title: "Piggy Bank (Dream Goals)", goal_title_ph: "Dream Goal",
+      target_eur_ph: "Target Amount (€)", saved_eur_ph: "Already Saved (€)", save_goal: "Save Goal",
+      add_lent_title: "Add Lent / Borrow Record", lent_option: "🟢 Lent to someone (Pabo)",
+      borrow_option: "🔴 Borrowed from someone (Dibo)", person_name_ph: "Person Name",
+      total_amt_ph: "Total Amount (€)", note_ph: "Note / Reason", save_record: "Save Record",
+      active_lent_title: "Active Lent & Borrow List", settled_history_title: "Settled History (Archive)",
+      settled_history_desc: "Tap button above to view or hide settled records.",
+      show_settled: "Show Settled", hide_settled: "Hide Settled",
+      upload_doc_title: "Upload & Track Documents", doc_name_ph: "Document Name (e.g. Permesso)",
+      expiry_date: "Expiry Date:", upload_file_label: "Upload Photo / PDF:",
+      save_document: "Save Document", saved_docs_title: "Saved Documents",
+      schedule_appt_title: "Schedule New Appointment", appt_purpose_ph: "Purpose",
+      appt_date_label: "Appointment Date:", appt_time_label: "Appointment Time:",
+      location_ph: "Location / Address", save_appt: "Save Appointment",
+      my_appointments: "My Appointments", appt_archive_title: "Appointment History & Archive",
+      appt_archive_desc: "Canceled, completed, or past appointments are safely stored here.",
+      show_archive: "Show Archive", hide_archive: "Hide Archive",
+      lawyer_info_title: "My Lawyer (Avvocato) Info", lawyer_name_ph: "Lawyer Name",
+      phone_ph: "Phone Number", address_ph: "Studio Address", case_note_ph: "Case Note",
+      save_lawyer: "Save Lawyer Info", emergency_title: "Italy Emergency Contacts",
+      emergency_112: "Carabinieri / Emergency (112)", emergency_118: "Ambulance (118)",
+      emergency_115: "Fire Brigade (115)", language_theme_title: "Language & Appearance",
+      lang_theme_desc: "Select your preferred language and app color theme.",
+      select_language: "Select Language:", select_theme: "Select Theme Style:",
+      smart_alerts_title: "Smart Alerts & Notifications", alerts_desc: "Enable browser notifications for urgent document expiry dates and appointments.",
+      enable_notifications: "Enable Browser Notifications", app_security_pin: "App Security PIN",
+      pin_ph: "Set New 4-Digit PIN", update_pin: "Update PIN", export_backup: "Export Backup",
+      export_desc: "Download backup file or copy text for Notes/WhatsApp.",
+      download_backup: "Download / Copy Backup", restore_backup: "Restore Backup",
+      option1_paste: "Option 1: Paste Backup Text", option2_upload: "Option 2: Upload Backup File (.json):",
+      restore_text: "Restore Text", reset_all: "Reset All"
+    },
+    it: {
+      pin_title: "Inserisci PIN di Sicurezza", pin_sub: "Il PIN predefinito è 1234", close: "Chiudi", confirm: "Conferma",
+      where_label: "Dove / Per cosa hai speso?", date_label: "Data:", dest_label: "Destinazione / Fonte:",
+      update_balance: "Aggiorna Saldo", reschedule_title: "Riprogramma Appuntamento",
+      new_date_label: "Nuova Data Appuntamento:", new_time_label: "Nuovo Orario Appuntamento:",
+      reason_label: "Motivo / Nota:", save_reschedule: "Salva Riprogrammazione",
+      cancel_appt_title: "Cancella Appuntamento", cancel_reason_label: "Motivo della cancellazione:",
+      confirm_cancel: "Conferma Cancellazione", tab_home: "🏠 Dashboard", tab_search: "🔍 Cerca",
+      tab_summary: "📊 Riepilogo", tab_wallet: "💳 Portafoglio", tab_lent: "🤝 Prestiti",
+      tab_docs: "📄 Documenti", tab_appts: "📅 Appuntamenti",
+      tab_lawyer: "⚖️ Avvocato", tab_settings: "⚙️ Impostazioni", net_available: "Disponibile Netto (€)",
+      banks_cash: "Banche + Contanti", bdt_title: "Bangladesh (BDT)", bd_wallets: "Totale Portafogli BD",
+      bank_balance: "💳 Saldo Bancario", cash_in_hand: "💵 Contanti in Mano",
+      monthly_expense_comp: "📈 Confronto Spese Mensili (EUR)",
+      comparing_spending: "Confronto delle spese di questo mese con il mese scorso.",
+      savings_goals: "🐷 Risparmi & Obiettivi", no_savings: "Nessun obiettivo impostato.",
+      upcoming_appts: "Prossimi Appuntamenti", no_upcoming: "Nessun appuntamento imminente.",
+      doc_expiry_status: "Stato Scadenza Documenti", no_docs_uploaded: "Nessun documento caricato.",
+      universal_search: "Ricerca Universale",
+      search_desc: "Cerca per nome, carta, transazione o documento.",
+      search_placeholder: "Digita nome, carta, negozio...",
+      financial_report_hub: "📊 Hub Rapporti Finanziari", month_wise: "🗓️ Mensile",
+      date_wise: "📅 Per Data", all_time: "♾️ Sempre", eur_expenses: "🇪🇺 Spese EUR",
+      bdt_expenses: "🇧🇩 Spese BDT", select_month: "Seleziona Mese:", select_exact_date: "Seleziona Data:",
+      card_spent: "💳 Speso da Carta", cash_spent: "💵 Speso in Contanti", active_pabo: "🟢 Crediti Attivi (Pabo)",
+      active_dibo: "🔴 Debiti Attivi (Dibo)", visual_analytics: "Grafico Spese (Torta)",
+      category_breakdown: "📍 Ripartizione per Categoria", transaction_history: "🧾 Cronologia Transazioni",
+      cash_in_hand_title: "Contanti in Mano (Tascabili)", available_physical: "Contanti Fisici Disponibili",
+      set_cash: "Imposta Contanti", add_cash: "Aggiungi Contanti", spend: "Spesa",
+      bank_cards_title: "Le mie Carte e Saldi (EUR)", bank_name_ph: "Nome Banca (es. PostePay)",
+      card_num_ph: "Numero Carta", amount_eur_ph: "Importo (€)", add_card: "Aggiungi Carta",
+      bdt_accounts_title: "Conti e Portafogli Bangladesh (BDT)",
+      bdt_accounts_desc: "Gestisci beni separati in Bangladesh.",
+      bdt_name_ph: "Nome Conto", bdt_num_ph: "Numero Conto / Telefono",
+      bdt_amount_ph: "Importo (৳ BDT)", add_bdt_account: "Aggiungi Conto BDT",
+      piggy_bank_title: "Salvadanaio (Obiettivi)", goal_title_ph: "Obiettivo",
+      target_eur_ph: "Importo Obiettivo (€)", saved_eur_ph: "Già Risparmiato (€)", save_goal: "Salva Obiettivo",
+      add_lent_title: "Aggiungi Prestito / Debito", lent_option: "🟢 Prestato a qualcuno (Pabo)",
+      borrow_option: "🔴 Preso in prestito (Dibo)", person_name_ph: "Nome Persona",
+      total_amt_ph: "Importo Totale (€)", note_ph: "Nota / Motivo", save_record: "Salva Record",
+      active_lent_title: "Elenco Prestiti Attivi", settled_history_title: "Storico Saldi (Archivio)",
+      settled_history_desc: "Tocca il pulsante sopra per visualizzare lo storico.",
+      show_settled: "Mostra Saldi", hide_settled: "Nascondi Saldi",
+      upload_doc_title: "Carica e Traccia Documenti", doc_name_ph: "Nome Documento",
+      expiry_date: "Data di Scadenza:", upload_file_label: "Carica Foto / PDF:",
+      save_document: "Salva Documento", saved_docs_title: "Documenti Salvati",
+      schedule_appt_title: "Pianifica Nuovo Appuntamento", appt_purpose_ph: "Scopo",
+      appt_date_label: "Data Appuntamento:", appt_time_label: "Orario Appuntamento:",
+      location_ph: "Luogo / Indirizzo", save_appt: "Salva Appuntamento",
+      my_appointments: "I miei Appuntamenti", appt_archive_title: "Storico e Archivio Appuntamenti",
+      appt_archive_desc: "Appuntamenti cancellati o passati conservati qui.",
+      show_archive: "Mostra Archivio", hide_archive: "Nascondi Archivio",
+      lawyer_info_title: "Informazioni Avvocato", lawyer_name_ph: "Nome Avvocato",
+      phone_ph: "Numero di Telefono", address_ph: "Indirizzo Studio", case_note_ph: "Nota sul Caso",
+      save_lawyer: "Salva Info Avvocato", emergency_title: "Contatti di Emergenza Italia",
+      emergency_112: "Carabinieri / Emergenza (112)", emergency_118: "Ambulanza (118)",
+      emergency_115: "Vigili del Fuoco (115)", language_theme_title: "Lingua e Aspetto",
+      lang_theme_desc: "Seleziona la lingua preferita e il tema colore.",
+      select_language: "Seleziona Lingua:", select_theme: "Seleziona Tema:",
+      smart_alerts_title: "Avvisi Intelligenti e Notifiche", alerts_desc: "Abilita le notifiche del browser per scadenze e appuntamenti.",
+      enable_notifications: "Abilita Notifiche Browser", app_security_pin: "PIN Sicurezza App",
+      pin_ph: "Nuovo PIN di 4 cifre", update_pin: "Aggiorna PIN", export_backup: "Esporta Backup",
+      export_desc: "Scarica file di backup o copia testo.",
+      download_backup: "Scarica / Copia Backup", restore_backup: "Ripristina Backup",
+      option1_paste: "Opzione 1: Incolla Testo", option2_upload: "Opzione 2: Carica File (.json):",
+      restore_text: "Ripristina Testo", reset_all: "Ripristina Tutto"
+    },
+    es: {
+      pin_title: "Ingrese PIN de Seguridad", pin_sub: "El PIN predeterminado es 1234", close: "Cerrar", confirm: "Confirmar",
+      where_label: "¿Dónde / En qué gastó?", date_label: "Fecha:", dest_label: "Destino / Fuente:",
+      update_balance: "Actualizar Saldo", reschedule_title: "Reprogramar Cita",
+      new_date_label: "Nueva Fecha de Cita:", new_time_label: "Nueva Hora de Cita:",
+      reason_label: "Motivo de Reprogramación:", save_reschedule: "Guardar Reprogramación",
+      cancel_appt_title: "Cancelar Cita", cancel_reason_label: "Motivo de Cancelación:",
+      confirm_cancel: "Confirmar Cancelación", tab_home: "🏠 Tablero", tab_search: "🔍 Buscar",
+      tab_summary: "📊 Resumen", tab_wallet: "💳 Billetera", tab_lent: "🤝 Préstamos",
+      tab_docs: "📄 Documentos", tab_appts: "📅 Citas",
+      tab_lawyer: "⚖️ Abogado", tab_settings: "⚙️ Ajustes", net_available: "Disponible Neto (€)",
+      banks_cash: "Bancos + Efectivo", bdt_title: "Bangladés (BDT)", bd_wallets: "Total Billeteras BD",
+      bank_balance: "💳 Saldo Bancario", cash_in_hand: "💵 Efectivo en Mano",
+      monthly_expense_comp: "📈 Comparación de Gastos Mensuales (EUR)",
+      comparing_spending: "Comparando los gastos de este mes con el mes pasado.",
+      savings_goals: "🐷 Ahorros y Metas", no_savings: "Sin metas aún.",
+      upcoming_appts: "Próximas Citas", no_upcoming: "Sin citas próximas.",
+      doc_expiry_status: "Estado de Documentos", no_docs_uploaded: "Sin documentos cargados.",
+      universal_search: "Búsqueda Universal",
+      search_desc: "Busca por nombre, tarjeta, transacción o documento.",
+      search_placeholder: "Escribe nombre, tarjeta, tienda...",
+      financial_report_hub: "📊 Centro de Reportes Financieros", month_wise: "🗓️ Mensual",
+      date_wise: "📅 Por Fecha", all_time: "♾️ Todo el tiempo", eur_expenses: "🇪🇺 Gastos EUR",
+      bdt_expenses: "🇧🇩 Gastos BDT", select_month: "Seleccionar Mes:", select_exact_date: "Seleccionar Fecha:",
+      card_spent: "💳 Gastado con Tarjeta", cash_spent: "💵 Gastado en Efectivo", active_pabo: "🟢 Activo Pabo",
+      active_dibo: "🔴 Activo Dibo", visual_analytics: "Gráfico Visual de Gastos",
+      category_breakdown: "📍 Desglose por Categoría", transaction_history: "🧾 Historial de Transacciones",
+      cash_in_hand_title: "Efectivo en Mano (Bolsillo)", available_physical: "Efectivo Físico Disponible",
+      set_cash: "Definir Efectivo", add_cash: "Agregar Efectivo", spend: "Gastar",
+      bank_cards_title: "Mis Tarjetas y Saldos (EUR)", bank_name_ph: "Nombre del Banco",
+      card_num_ph: "Número de Tarjeta", amount_eur_ph: "Monto (€)", add_card: "Agregar Tarjeta",
+      bdt_accounts_title: "Cuentas Bangladés (BDT)",
+      bdt_accounts_desc: "Administra activos separados en BDT.",
+      bdt_name_ph: "Nombre de Cuenta", bdt_num_ph: "Número de Cuenta",
+      bdt_amount_ph: "Monto (৳ BDT)", add_bdt_account: "Agregar Cuenta BDT",
+      piggy_bank_title: "Alcancía (Metas)", goal_title_ph: "Meta",
+      target_eur_ph: "Monto Objetivo (€)", saved_eur_ph: "Ya Ahorrado (€)", save_goal: "Guardar Meta",
+      add_lent_title: "Agregar Registro de Préstamo", lent_option: "🟢 Prestado a alguien (Pabo)",
+      borrow_option: "🔴 Pedido prestado (Dibo)", person_name_ph: "Nombre de Persona",
+      total_amt_ph: "Monto Total (€)", note_ph: "Nota / Motivo", save_record: "Guardar Registro",
+      active_lent_title: "Lista de Préstamos Activos", settled_history_title: "Historial Saldados (Archivo)",
+      settled_history_desc: "Toca el botón de arriba para ver o ocultar.",
+      show_settled: "Mostrar Saldados", hide_settled: "Ocultar Saldados",
+      upload_doc_title: "Subir Documentos", doc_name_ph: "Nombre de Documento",
+      expiry_date: "Fecha de Expiración:", upload_file_label: "Subir Foto / PDF:",
+      save_document: "Guardar Documento", saved_docs_title: "Documentos Guardados",
+      schedule_appt_title: "Programar Cita", appt_purpose_ph: "Propósito",
+      appt_date_label: "Fecha de Cita:", appt_time_label: "Hora de Cita:",
+      location_ph: "Lugar / Dirección", save_appt: "Guardar Cita",
+      my_appointments: "Mis Citas", appt_archive_title: "Historial de Citas",
+      appt_archive_desc: "Citas canceladas o pasadas se guardan aquí.",
+      show_archive: "Mostrar Archivo", hide_archive: "Ocultar Archivo",
+      lawyer_info_title: "Información de Abogado", lawyer_name_ph: "Nombre del Abogado",
+      phone_ph: "Teléfono", address_ph: "Dirección", case_note_ph: "Nota del Caso",
+      save_lawyer: "Guardar Info", emergency_title: "Contactos de Emergencia",
+      emergency_112: "Emergencia (112)", emergency_118: "Ambulancia (118)",
+      emergency_115: "Bomberos (115)", language_theme_title: "Idioma y Apariencia",
+      lang_theme_desc: "Selecciona tu idioma preferido y tema de color.",
+      select_language: "Seleccionar Idioma:", select_theme: "Seleccionar Tema:",
+      smart_alerts_title: "Alertas Inteligentes y Notificaciones", alerts_desc: "Habilita notificaciones del navegador para fechas de vencimiento y citas.",
+      enable_notifications: "Habilitar Notificaciones", app_security_pin: "PIN de Seguridad",
+      pin_ph: "Nuevo PIN de 4 dígitos", update_pin: "Actualizar PIN", export_backup: "Exportar Respaldo",
+      export_desc: "Descarga archivo o copia texto.",
+      download_backup: "Descargar / Copiar Respaldo", restore_backup: "Restaurar Respaldo",
+      option1_paste: "Opción 1: Pegar Texto", option2_upload: "Opción 2: Subir Archivo (.json):",
+      restore_text: "Restaurar Texto", reset_all: "Restablecer Todo"
+    }
+  };
+
+  let currentLang = localStorage.getItem("probashiLang") || "en";
   let currentThemeStyle = localStorage.getItem("probashiThemeStyle") || "dark";
+
+  function applyLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("probashiLang", lang);
+    let langSel = document.getElementById("langSelector");
+    if (langSel) langSel.value = lang;
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      let key = el.getAttribute("data-i18n");
+      if (translations[lang] && translations[lang][key]) {
+        el.innerText = translations[lang][key];
+      }
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+      let key = el.getAttribute("data-i18n-placeholder");
+      if (translations[lang] && translations[lang][key]) {
+        el.setAttribute("placeholder", translations[lang][key]);
+      }
+    });
+  }
+
+  function changeLanguage(lang) {
+    applyLanguage(lang);
+    renderAll();
+  }
 
   function changeTheme(style) {
     currentThemeStyle = style;
@@ -821,6 +1072,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     changeTheme(currentThemeStyle);
+    applyLanguage(currentLang);
     checkPinScreen();
   });
 
@@ -1124,7 +1376,7 @@
     let container = document.getElementById("settledLoanContainer");
     let btnText = document.getElementById("settledToggleBtnText");
     if (container) container.style.display = isSettledVisible ? "block" : "none";
-    if (btnText) btnText.innerText = isSettledVisible ? "Hide Settled" : "Show Settled";
+    if (btnText) btnText.innerText = isSettledVisible ? (translations[currentLang].hide_settled || "Hide Settled") : (translations[currentLang].show_settled || "Show Settled");
   }
 
   function saveLoan() {
@@ -1597,7 +1849,7 @@
     let container = document.getElementById("apptArchiveContainer");
     let btnText = document.getElementById("archiveToggleBtnText");
     if (container) container.style.display = isArchiveVisible ? "block" : "none";
-    if (btnText) btnText.innerText = isArchiveVisible ? "Hide Archive" : "Show Archive";
+    if (btnText) btnText.innerText = isArchiveVisible ? (translations[currentLang].hide_archive || "Hide Archive") : (translations[currentLang].show_archive || "Show Archive");
   }
 
   function viewAppointmentTimeline(index) {
