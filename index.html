@@ -1725,7 +1725,7 @@
   </style>
 </head>
 <body>
-  <!-- iPhone-style 4-Digit PIN Lock Screen (No Easy Bypass) -->
+  <!-- iPhone-style 4-Digit PIN Lock Screen -->
   <div class="pin-lock-screen" id="pinLockScreen" aria-live="polite">
     <div class="pin-header">
       <div class="pin-lock-badge" id="pinLockIcon">🔒</div>
@@ -2093,13 +2093,60 @@
           <label class="form-label" data-i18n="copyBackupLabel">1. Encrypted Backup</label>
           <button class="send-cta" style="width:100%;margin:4px 0 0;height:46px;font-size:14px;" id="copyBackupBtn" data-i18n="copyBackupBtn">🔐 Copy Encrypted Backup</button>
         </div>
+
         <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0;" />
+
         <div class="form-group">
-          <label class="form-label" data-i18n="restoreDataLabel">2. Restore Data (Auto-Decrypt on Paste)</label>
-          <textarea class="form-textarea" id="backupImportText" rows="4" placeholder="Paste encrypted backup here..."></textarea>
-          <button class="send-cta" style="width:100%;margin:8px 0 0;height:46px;font-size:14px;background:var(--emerald);color:#fff;" id="restoreBackupBtn" data-i18n="restoreDataBtn">🔓 Restore Data</button>
+          <label class="form-label">2. Paste Encrypted Backup & Decrypt</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input
+              type="text"
+              class="form-input"
+              id="backupSmallInput"
+              placeholder="Encrypted text will paste here..."
+              style="flex:1;min-width:0;padding:10px 12px;font-size:13px;"
+            />
+            <button
+              type="button"
+              class="pill-btn pill-add"
+              id="pasteEncryptedBtn"
+              style="padding:10px 14px;font-size:12.5px;flex-shrink:0;"
+            >
+              Paste
+            </button>
+            <button
+              type="button"
+              class="pill-btn"
+              id="decryptedJsonBtn"
+              style="display:none;padding:10px 14px;font-size:12.5px;flex-shrink:0;background:var(--blue);color:#fff;"
+            >
+              JSON
+            </button>
+          </div>
+
+          <div id="decryptedPreviewBox" style="display:none;margin-top:10px;">
+            <label class="form-label" style="margin-bottom:4px;">Decrypted JSON Preview</label>
+            <textarea
+              class="form-textarea"
+              id="decryptedJsonArea"
+              rows="4"
+              readonly
+              style="font-size:11.5px;font-family:monospace;"
+            ></textarea>
+          </div>
+
+          <button
+            type="button"
+            class="send-cta"
+            style="width:100%;margin:10px 0 0;height:46px;font-size:14px;background:var(--emerald);color:#fff;"
+            id="restoreBackupBtn"
+          >
+            🔓 Backup Restore
+          </button>
         </div>
+
         <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0;" />
+
         <div class="form-group" style="margin-bottom:0;">
           <label class="form-label" style="color:var(--danger);" data-i18n="dangerZone">Danger Zone</label>
           <button class="reset-wallet-cta" id="resetWalletBtn" data-i18n="resetWalletBtn">♻️ Reset All Balances to 0</button>
@@ -2204,8 +2251,6 @@
         appearanceTitle: 'Theme & Language',
         copyBackupLabel: '1. Encrypted Backup',
         copyBackupBtn: '🔐 Copy Encrypted Backup',
-        restoreDataLabel: '2. Restore Data (Auto-Decrypt on Paste)',
-        restoreDataBtn: '🔓 Restore Data',
         dangerZone: 'Danger Zone',
         resetWalletBtn: '♻️ Reset All Balances to 0',
         selectCatFirst: 'Please select a category from the top bar first!',
@@ -2294,8 +2339,6 @@
         appearanceTitle: 'Tema e Lingua',
         copyBackupLabel: '1. Backup Criptato',
         copyBackupBtn: '🔐 Copia Backup Criptato',
-        restoreDataLabel: '2. Ripristina Dati (Decrittazione Auto)',
-        restoreDataBtn: '🔓 Ripristina Dati',
         dangerZone: 'Zona Pericolosa',
         resetWalletBtn: '♻️ Azzera Tutti i Saldi a 0',
         selectCatFirst: 'Seleziona prima una categoria in alto!',
@@ -2384,8 +2427,6 @@
         appearanceTitle: 'Tema e Idioma',
         copyBackupLabel: '1. Respaldo Encriptado',
         copyBackupBtn: '🔐 Copiar Respaldo Encriptado',
-        restoreDataLabel: '2. Restaurar Datos (Auto-Desencriptar)',
-        restoreDataBtn: '🔓 Restaurar Datos',
         dangerZone: 'Zona de Peligro',
         resetWalletBtn: '♻️ Reiniciar Todos los Saldos a 0',
         selectCatFirst: '¡Selecciona una categoría arriba primero!',
@@ -2474,8 +2515,6 @@
         appearanceTitle: 'থিম ও ভাষা',
         copyBackupLabel: '১. এনক্রিপ্টেড ব্যাকআপ',
         copyBackupBtn: '🔐 এনক্রিপ্টেড ব্যাকআপ কপি করুন',
-        restoreDataLabel: '২. ডেটা রিস্টোর (পেস্ট করলেই অটো ডিক্রিপ্ট)',
-        restoreDataBtn: '🔓 ডেটা রিস্টোর করুন',
         dangerZone: 'ডেঞ্জার জোন',
         resetWalletBtn: '♻️ সব ব্যালেন্স ০ করুন',
         selectCatFirst: 'দয়া করে ওপর থেকে আগে একটি ক্যাটাগরি সিলেক্ট করুন!',
@@ -2571,20 +2610,17 @@
     }
 
     function decryptBackupPayload(inputStr) {
-      let trimmed = String(inputStr || '').trim();
+      const trimmed = String(inputStr || '').trim();
       if (!trimmed) throw new Error('Empty backup');
 
-      // Already plain JSON
       if (trimmed.startsWith('{')) {
         return JSON.parse(trimmed);
       }
 
-      // Remove prefix if present
       let b64Part = trimmed.startsWith(BACKUP_CIPHER_PREFIX)
         ? trimmed.slice(BACKUP_CIPHER_PREFIX.length)
         : trimmed;
 
-      // Normalize URL-safe base64 & strip spaces/newlines
       b64Part = b64Part.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
       const padLen = b64Part.length % 4;
       if (padLen > 0) {
@@ -2683,6 +2719,10 @@
     let selectedNewIcon = ICON_LIBRARY[0];
     let statementCardId = null;
 
+    // Backup Decrypt/Restore Flow State
+    let currentDecryptedJsonString = '';
+    let currentParsedBackupData = null;
+
     // PIN Lock State
     let pinBuffer = '';
     let pinFlowMode = 'unlock';
@@ -2728,6 +2768,46 @@
 
     function triggerHaptic() {
       if (navigator.vibrate) navigator.vibrate(12);
+    }
+
+    function setDecryptedJsonState(parsedObj) {
+      currentParsedBackupData = parsedObj;
+      currentDecryptedJsonString = JSON.stringify(parsedObj, null, 2);
+
+      const jsonBtn = document.getElementById('decryptedJsonBtn');
+      const previewBox = document.getElementById('decryptedPreviewBox');
+      const jsonArea = document.getElementById('decryptedJsonArea');
+
+      if (jsonBtn) jsonBtn.style.display = 'inline-flex';
+      if (previewBox) previewBox.style.display = 'block';
+      if (jsonArea) jsonArea.value = currentDecryptedJsonString;
+    }
+
+    function clearDecryptedJsonState() {
+      currentDecryptedJsonString = '';
+      currentParsedBackupData = null;
+
+      const jsonBtn = document.getElementById('decryptedJsonBtn');
+      const previewBox = document.getElementById('decryptedPreviewBox');
+      const jsonArea = document.getElementById('decryptedJsonArea');
+
+      if (jsonBtn) jsonBtn.style.display = 'none';
+      if (previewBox) previewBox.style.display = 'none';
+      if (jsonArea) jsonArea.value = '';
+    }
+
+    function decryptFromEncryptedInput(rawVal) {
+      const cleaned = String(rawVal || '').trim();
+      if (!cleaned) {
+        clearDecryptedJsonState();
+        return null;
+      }
+      const parsed = decryptBackupPayload(cleaned);
+      if (!parsed || !Array.isArray(parsed.cards) || parsed.cards.length === 0) {
+        throw new Error('Invalid backup payload');
+      }
+      setDecryptedJsonState(parsed);
+      return parsed;
     }
 
     function updatePinDotsVisual(errorState = false) {
@@ -3916,7 +3996,9 @@
       renderSecurityTab();
       const recInput = document.getElementById('recoveryKeyInput');
       if (recInput) recInput.value = '';
-      document.getElementById('backupImportText').value = '';
+      const smallInput = document.getElementById('backupSmallInput');
+      if (smallInput) smallInput.value = '';
+      clearDecryptedJsonState();
       document.getElementById('settingsBackdrop').classList.add('open');
     }
 
@@ -4091,7 +4173,6 @@
         renderSecurityTab();
       });
 
-      // Recovery Code verification on lock screen (no casual bypass)
       document.getElementById('pinUnlockWithRecoveryBtn')?.addEventListener('click', () => {
         const enteredCode = prompt(t('recoveryPromptMsg'));
         if (enteredCode === null) return;
@@ -4107,7 +4188,6 @@
         }
       });
 
-      // Security tab controls
       document.getElementById('pinToggleCheckbox')?.addEventListener('change', (e) => {
         triggerHaptic();
         if (e.target.checked) {
@@ -4358,28 +4438,103 @@
         }
       });
 
-      const restoreInputEl = document.getElementById('backupImportText');
-      restoreInputEl?.addEventListener('paste', () => {
-        setTimeout(() => {
-          const raw = restoreInputEl.value.trim();
-          if (!raw) return;
+      document.getElementById('pasteEncryptedBtn')?.addEventListener('click', async () => {
+        const inputEl = document.getElementById('backupSmallInput');
+        if (!inputEl) return;
+
+        let pastedText = '';
+        try {
+          if (navigator.clipboard && navigator.clipboard.readText) {
+            pastedText = await navigator.clipboard.readText();
+          }
+        } catch (err) {
+          pastedText = '';
+        }
+
+        if (!pastedText) {
+          inputEl.focus();
           try {
-            const decrypted = decryptBackupPayload(raw);
-            if (decrypted && Array.isArray(decrypted.cards)) {
-              restoreInputEl.value = JSON.stringify(decrypted, null, 2);
-              showToast('Auto-decrypted! Tap Restore Data.');
-            }
+            document.execCommand('paste');
+            pastedText = inputEl.value;
           } catch (err) {}
-        }, 25);
+        }
+
+        if (!pastedText) {
+          inputEl.focus();
+          showToast('Input বক্সে চাপ দিয়ে Paste করুন', true);
+          return;
+        }
+
+        inputEl.value = pastedText.trim();
+
+        try {
+          decryptFromEncryptedInput(inputEl.value);
+          showToast('Decrypted! JSON বাটন এসেছে');
+        } catch (e) {
+          clearDecryptedJsonState();
+          showToast('Invalid or corrupted backup data', true);
+        }
+      });
+
+      document.getElementById('backupSmallInput')?.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if (!val) {
+          clearDecryptedJsonState();
+          return;
+        }
+        try {
+          decryptFromEncryptedInput(val);
+        } catch (err) {
+          clearDecryptedJsonState();
+        }
+      });
+
+      document.getElementById('decryptedJsonBtn')?.addEventListener('click', async () => {
+        if (!currentDecryptedJsonString) {
+          const inputVal = document.getElementById('backupSmallInput')?.value || '';
+          try {
+            decryptFromEncryptedInput(inputVal);
+          } catch (e) {
+            return showToast('No decrypted JSON available', true);
+          }
+        }
+
+        if (!currentDecryptedJsonString) return;
+
+        try {
+          await navigator.clipboard.writeText(currentDecryptedJsonString);
+          showToast('Decrypted JSON copied!');
+        } catch (e) {
+          const jsonArea = document.getElementById('decryptedJsonArea');
+          if (jsonArea) {
+            jsonArea.select();
+            document.execCommand('copy');
+          }
+          showToast('Decrypted JSON copied!');
+        }
       });
 
       document.getElementById('restoreBackupBtn').addEventListener('click', () => {
-        const raw = document.getElementById('backupImportText').value.trim();
-        if (!raw) return showToast('Paste backup first', true);
         try {
-          const parsed = decryptBackupPayload(raw);
-          if (!parsed.cards || !Array.isArray(parsed.cards)) throw new Error('Invalid format');
-          state = parsed;
+          let dataToRestore = currentParsedBackupData;
+          if (!dataToRestore) {
+            const rawInput = document.getElementById('backupSmallInput')?.value || '';
+            dataToRestore = decryptFromEncryptedInput(rawInput);
+          }
+          if (!dataToRestore || !Array.isArray(dataToRestore.cards) || dataToRestore.cards.length === 0) {
+            throw new Error('Invalid data');
+          }
+
+          state = {
+            ...getDefaultState(),
+            ...dataToRestore,
+            cards: dataToRestore.cards,
+            categories: Array.isArray(dataToRestore.categories) && dataToRestore.categories.length > 0
+              ? dataToRestore.categories
+              : [...DEFAULT_CATEGORIES],
+            transactions: Array.isArray(dataToRestore.transactions) ? dataToRestore.transactions : []
+          };
+          activeCardIndex = 0;
           saveState();
           refreshAll(true);
           document.getElementById('settingsBackdrop').classList.remove('open');
