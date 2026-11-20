@@ -2571,24 +2571,36 @@
     }
 
     function decryptBackupPayload(inputStr) {
-      const trimmed = String(inputStr || '').trim();
+      let trimmed = String(inputStr || '').trim();
       if (!trimmed) throw new Error('Empty backup');
 
-      if (trimmed.startsWith(BACKUP_CIPHER_PREFIX)) {
-        const b64 = trimmed.slice(BACKUP_CIPHER_PREFIX.length).replace(/\s+/g, '');
-        const binary = atob(b64);
-        if (binary.length < 2) throw new Error('Invalid cipher');
-        const salt = binary.charCodeAt(0);
-        const plainBytes = new Uint8Array(binary.length - 1);
-        for (let i = 1; i < binary.length; i++) {
-          const k = BACKUP_KEY_BYTES[(i - 1) % BACKUP_KEY_BYTES.length];
-          plainBytes[i - 1] = binary.charCodeAt(i) ^ k ^ ((salt + (i - 1) * 7) & 0xff);
-        }
-        const decoder = new TextDecoder();
-        return JSON.parse(decoder.decode(plainBytes));
+      // Already plain JSON
+      if (trimmed.startsWith('{')) {
+        return JSON.parse(trimmed);
       }
 
-      return JSON.parse(trimmed);
+      // Remove prefix if present
+      let b64Part = trimmed.startsWith(BACKUP_CIPHER_PREFIX)
+        ? trimmed.slice(BACKUP_CIPHER_PREFIX.length)
+        : trimmed;
+
+      // Normalize URL-safe base64 & strip spaces/newlines
+      b64Part = b64Part.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
+      const padLen = b64Part.length % 4;
+      if (padLen > 0) {
+        b64Part += '='.repeat(4 - padLen);
+      }
+
+      const binary = atob(b64Part);
+      if (binary.length < 2) throw new Error('Invalid cipher');
+      const salt = binary.charCodeAt(0);
+      const plainBytes = new Uint8Array(binary.length - 1);
+      for (let i = 1; i < binary.length; i++) {
+        const k = BACKUP_KEY_BYTES[(i - 1) % BACKUP_KEY_BYTES.length];
+        plainBytes[i - 1] = binary.charCodeAt(i) ^ k ^ ((salt + (i - 1) * 7) & 0xff);
+      }
+      const decoder = new TextDecoder();
+      return JSON.parse(decoder.decode(plainBytes));
     }
 
     function hashSecret(val) {
@@ -2673,7 +2685,7 @@
 
     // PIN Lock State
     let pinBuffer = '';
-    let pinFlowMode = 'unlock'; // 'unlock' | 'setup_new' | 'setup_confirm'
+    let pinFlowMode = 'unlock';
     let pendingNewPin = '';
 
     function t(key) {
@@ -4358,7 +4370,7 @@
               showToast('Auto-decrypted! Tap Restore Data.');
             }
           } catch (err) {}
-        }, 10);
+        }, 25);
       });
 
       document.getElementById('restoreBackupBtn').addEventListener('click', () => {
