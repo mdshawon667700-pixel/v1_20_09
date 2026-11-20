@@ -1266,6 +1266,31 @@
       transform: scale(0.97);
     }
 
+    .reset-wallet-cta {
+      width: 100%;
+      margin-top: 8px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(220, 38, 38, 0.08));
+      color: var(--danger);
+      font-size: 14.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.16s ease, background-color 0.2s ease;
+    }
+
+    .reset-wallet-cta:active {
+      transform: scale(0.98);
+      background: var(--danger);
+      color: #ffffff;
+    }
+
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -2065,20 +2090,19 @@
 
       <div id="backupTab" style="display:none;">
         <div class="form-group">
-          <label class="form-label" data-i18n="copyBackupLabel">1. Copy Backup Text</label>
-          <textarea class="form-textarea" id="backupExportText" rows="4" readonly></textarea>
-          <button class="send-cta" style="width:100%;margin:8px 0 0;height:44px;font-size:14px;" id="copyBackupBtn" data-i18n="copyBackupBtn">Copy Backup Text</button>
+          <label class="form-label" data-i18n="copyBackupLabel">1. Encrypted Backup</label>
+          <button class="send-cta" style="width:100%;margin:4px 0 0;height:46px;font-size:14px;" id="copyBackupBtn" data-i18n="copyBackupBtn">🔐 Copy Encrypted Backup</button>
         </div>
         <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0;" />
         <div class="form-group">
-          <label class="form-label" data-i18n="restoreDataLabel">2. Restore Data</label>
-          <textarea class="form-textarea" id="backupImportText" rows="4" placeholder="Paste your saved backup JSON here..."></textarea>
-          <button class="send-cta" style="width:100%;margin:8px 0 0;height:44px;font-size:14px;background:var(--emerald);color:#fff;" id="restoreBackupBtn" data-i18n="restoreDataBtn">Restore Data</button>
+          <label class="form-label" data-i18n="restoreDataLabel">2. Restore Data (Auto-Decrypt on Paste)</label>
+          <textarea class="form-textarea" id="backupImportText" rows="4" placeholder="Paste encrypted backup here..."></textarea>
+          <button class="send-cta" style="width:100%;margin:8px 0 0;height:46px;font-size:14px;background:var(--emerald);color:#fff;" id="restoreBackupBtn" data-i18n="restoreDataBtn">🔓 Restore Data</button>
         </div>
         <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0;" />
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom:0;">
           <label class="form-label" style="color:var(--danger);" data-i18n="dangerZone">Danger Zone</label>
-          <button class="send-cta" style="width:100%;height:44px;font-size:14px;background:var(--danger-bg);color:var(--danger);" id="resetWalletBtn" data-i18n="resetWalletBtn">⚠️ Reset All Wallet Data</button>
+          <button class="reset-wallet-cta" id="resetWalletBtn" data-i18n="resetWalletBtn">♻️ Reset All Balances to 0</button>
         </div>
       </div>
     </div>
@@ -2178,12 +2202,12 @@
         chooseTheme: 'Choose App Theme',
         chooseLang: 'Choose Language',
         appearanceTitle: 'Theme & Language',
-        copyBackupLabel: '1. Copy Backup Text',
-        copyBackupBtn: 'Copy Backup Text',
-        restoreDataLabel: '2. Restore Data',
-        restoreDataBtn: 'Restore Data',
+        copyBackupLabel: '1. Encrypted Backup',
+        copyBackupBtn: '🔐 Copy Encrypted Backup',
+        restoreDataLabel: '2. Restore Data (Auto-Decrypt on Paste)',
+        restoreDataBtn: '🔓 Restore Data',
         dangerZone: 'Danger Zone',
-        resetWalletBtn: '⚠️ Reset All Wallet Data',
+        resetWalletBtn: '♻️ Reset All Balances to 0',
         selectCatFirst: 'Please select a category from the top bar first!',
         validAmountErr: 'Please enter a valid amount greater than 0',
         insufficientBal: 'Insufficient balance!',
@@ -2268,12 +2292,12 @@
         chooseTheme: 'Scegli Tema App',
         chooseLang: 'Scegli Lingua',
         appearanceTitle: 'Tema e Lingua',
-        copyBackupLabel: '1. Copia Testo Backup',
-        copyBackupBtn: 'Copia Backup',
-        restoreDataLabel: '2. Ripristina Dati',
-        restoreDataBtn: 'Ripristina Dati',
+        copyBackupLabel: '1. Backup Criptato',
+        copyBackupBtn: '🔐 Copia Backup Criptato',
+        restoreDataLabel: '2. Ripristina Dati (Decrittazione Auto)',
+        restoreDataBtn: '🔓 Ripristina Dati',
         dangerZone: 'Zona Pericolosa',
-        resetWalletBtn: '⚠️ Ripristina Tutti i Dati',
+        resetWalletBtn: '♻️ Azzera Tutti i Saldi a 0',
         selectCatFirst: 'Seleziona prima una categoria in alto!',
         validAmountErr: 'Inserisci un importo valido maggiore di 0',
         insufficientBal: 'Saldo insufficiente!',
@@ -2358,12 +2382,12 @@
         chooseTheme: 'Elige Tema de la App',
         chooseLang: 'Elige Idioma',
         appearanceTitle: 'Tema e Idioma',
-        copyBackupLabel: '1. Copiar Texto de Respaldo',
-        copyBackupBtn: 'Copiar Respaldo',
-        restoreDataLabel: '2. Restaurar Datos',
-        restoreDataBtn: 'Restaurar Datos',
+        copyBackupLabel: '1. Respaldo Encriptado',
+        copyBackupBtn: '🔐 Copiar Respaldo Encriptado',
+        restoreDataLabel: '2. Restaurar Datos (Auto-Desencriptar)',
+        restoreDataBtn: '🔓 Restaurar Datos',
         dangerZone: 'Zona de Peligro',
-        resetWalletBtn: '⚠️ Borrar Todos los Datos',
+        resetWalletBtn: '♻️ Reiniciar Todos los Saldos a 0',
         selectCatFirst: '¡Selecciona una categoría arriba primero!',
         validAmountErr: 'Introduce un monto válido mayor que 0',
         insufficientBal: '¡Saldo insuficiente!',
@@ -2448,12 +2472,12 @@
         chooseTheme: 'অ্যাপের থিম বাছাই করুন',
         chooseLang: 'ভাষা নির্বাচন করুন',
         appearanceTitle: 'থিম ও ভাষা',
-        copyBackupLabel: '১. ব্যাকআপ টেক্সট কপি করুন',
-        copyBackupBtn: 'ব্যাকআপ কপি করুন',
-        restoreDataLabel: '২. ডেটা রিস্টোর করুন',
-        restoreDataBtn: 'রিস্টোর করুন',
+        copyBackupLabel: '১. এনক্রিপ্টেড ব্যাকআপ',
+        copyBackupBtn: '🔐 এনক্রিপ্টেড ব্যাকআপ কপি করুন',
+        restoreDataLabel: '২. ডেটা রিস্টোর (পেস্ট করলেই অটো ডিক্রিপ্ট)',
+        restoreDataBtn: '🔓 ডেটা রিস্টোর করুন',
         dangerZone: 'ডেঞ্জার জোন',
-        resetWalletBtn: '⚠️ সব ডেটা রিসেট করুন',
+        resetWalletBtn: '♻️ সব ব্যালেন্স ০ করুন',
         selectCatFirst: 'দয়া করে ওপর থেকে আগে একটি ক্যাটাগরি সিলেক্ট করুন!',
         validAmountErr: 'সঠিক অ্যামাউন্ট লিখুন (০ এর বেশি)',
         insufficientBal: 'কার্ডে পর্যাপ্ত ব্যালেন্স নেই!',
@@ -2526,6 +2550,46 @@
     ];
 
     const STORAGE_KEY = 'pocketflow_wallet_v12';
+    const BACKUP_CIPHER_PREFIX = 'PFENC1:';
+    const BACKUP_KEY_BYTES = [0x50, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x46, 0x6c, 0x6f, 0x77, 0x32, 0x30, 0x32, 0x36, 0x21, 0x23];
+
+    function encryptBackupPayload(jsonStr) {
+      const encoder = new TextEncoder();
+      const rawBytes = encoder.encode(jsonStr);
+      const salt = Math.floor(Math.random() * 250) + 1;
+      const out = new Uint8Array(rawBytes.length + 1);
+      out[0] = salt;
+      for (let i = 0; i < rawBytes.length; i++) {
+        const k = BACKUP_KEY_BYTES[i % BACKUP_KEY_BYTES.length];
+        out[i + 1] = rawBytes[i] ^ k ^ ((salt + i * 7) & 0xff);
+      }
+      let binary = '';
+      for (let i = 0; i < out.length; i++) {
+        binary += String.fromCharCode(out[i]);
+      }
+      return BACKUP_CIPHER_PREFIX + btoa(binary);
+    }
+
+    function decryptBackupPayload(inputStr) {
+      const trimmed = String(inputStr || '').trim();
+      if (!trimmed) throw new Error('Empty backup');
+
+      if (trimmed.startsWith(BACKUP_CIPHER_PREFIX)) {
+        const b64 = trimmed.slice(BACKUP_CIPHER_PREFIX.length).replace(/\s+/g, '');
+        const binary = atob(b64);
+        if (binary.length < 2) throw new Error('Invalid cipher');
+        const salt = binary.charCodeAt(0);
+        const plainBytes = new Uint8Array(binary.length - 1);
+        for (let i = 1; i < binary.length; i++) {
+          const k = BACKUP_KEY_BYTES[(i - 1) % BACKUP_KEY_BYTES.length];
+          plainBytes[i - 1] = binary.charCodeAt(i) ^ k ^ ((salt + (i - 1) * 7) & 0xff);
+        }
+        const decoder = new TextDecoder();
+        return JSON.parse(decoder.decode(plainBytes));
+      }
+
+      return JSON.parse(trimmed);
+    }
 
     function hashSecret(val) {
       const str = 'pf_sec_v1:' + String(val || '');
@@ -2569,6 +2633,23 @@
           }
         ],
         categories: [...DEFAULT_CATEGORIES],
+        transactions: []
+      };
+    }
+
+    function getZeroedWalletState() {
+      const zeroedCards = (state.cards && state.cards.length > 0)
+        ? state.cards.map(c => ({ ...c, balance: 0 }))
+        : getDefaultState().cards.map(c => ({ ...c, balance: 0 }));
+
+      return {
+        theme: state.theme || 'light',
+        lang: state.lang || 'en',
+        pinEnabled: Boolean(state.pinEnabled),
+        pinHash: state.pinHash || '',
+        recoveryHash: state.recoveryHash || hashSecret('0000'),
+        cards: zeroedCards,
+        categories: Array.isArray(state.categories) && state.categories.length > 0 ? [...state.categories] : [...DEFAULT_CATEGORIES],
         transactions: []
       };
     }
@@ -3823,7 +3904,6 @@
       renderSecurityTab();
       const recInput = document.getElementById('recoveryKeyInput');
       if (recInput) recInput.value = '';
-      document.getElementById('backupExportText').value = JSON.stringify(state);
       document.getElementById('backupImportText').value = '';
       document.getElementById('settingsBackdrop').classList.add('open');
     }
@@ -4240,37 +4320,52 @@
       });
 
       document.getElementById('resetWalletBtn').addEventListener('click', () => {
-        if (!confirm('Are you sure you want to reset all wallet data?')) return;
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem('pocketflow_wallet_v11');
-        localStorage.removeItem('pocketflow_wallet_v10');
-        localStorage.removeItem('pocketflow_wallet_v9');
-        localStorage.removeItem('pocketflow_wallet_v8');
-        state = getDefaultState();
+        if (!confirm('Reset all card balances & transactions to 0?')) return;
+        state = getZeroedWalletState();
         activeCardIndex = 0;
         saveState();
+        renderSettingsCards();
         refreshAll(true);
         document.getElementById('settingsBackdrop').classList.remove('open');
-        showToast('Wallet reset', true);
+        showToast('All balances reset to 0');
       });
 
       document.getElementById('copyBackupBtn').addEventListener('click', async () => {
-        const text = document.getElementById('backupExportText').value;
+        const encryptedText = encryptBackupPayload(JSON.stringify(state));
         try {
-          await navigator.clipboard.writeText(text);
-          showToast('Backup JSON copied!');
+          await navigator.clipboard.writeText(encryptedText);
+          showToast('Encrypted backup copied!');
         } catch (e) {
-          document.getElementById('backupExportText').select();
+          const tempArea = document.createElement('textarea');
+          tempArea.value = encryptedText;
+          document.body.appendChild(tempArea);
+          tempArea.select();
           document.execCommand('copy');
-          showToast('Backup JSON copied!');
+          tempArea.remove();
+          showToast('Encrypted backup copied!');
         }
+      });
+
+      const restoreInputEl = document.getElementById('backupImportText');
+      restoreInputEl?.addEventListener('paste', () => {
+        setTimeout(() => {
+          const raw = restoreInputEl.value.trim();
+          if (!raw) return;
+          try {
+            const decrypted = decryptBackupPayload(raw);
+            if (decrypted && Array.isArray(decrypted.cards)) {
+              restoreInputEl.value = JSON.stringify(decrypted, null, 2);
+              showToast('Auto-decrypted! Tap Restore Data.');
+            }
+          } catch (err) {}
+        }, 10);
       });
 
       document.getElementById('restoreBackupBtn').addEventListener('click', () => {
         const raw = document.getElementById('backupImportText').value.trim();
-        if (!raw) return showToast('Paste backup JSON first', true);
+        if (!raw) return showToast('Paste backup first', true);
         try {
-          const parsed = JSON.parse(raw);
+          const parsed = decryptBackupPayload(raw);
           if (!parsed.cards || !Array.isArray(parsed.cards)) throw new Error('Invalid format');
           state = parsed;
           saveState();
@@ -4278,7 +4373,7 @@
           document.getElementById('settingsBackdrop').classList.remove('open');
           showToast('Wallet data restored!');
         } catch (e) {
-          showToast('Invalid JSON backup text', true);
+          showToast('Invalid or corrupted backup data', true);
         }
       });
 
